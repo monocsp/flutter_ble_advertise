@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - tecsen_plugin (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - tecsen_plugin (from `.symlinks/plugins/tecsen_plugin/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  tecsen_plugin:
+    :path: ".symlinks/plugins/tecsen_plugin/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  tecsen_plugin: 319c26ff4cfe3c4db41ee1991d50d27c85d68d50
+
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+
+COCOAPODS: 1.11.3
