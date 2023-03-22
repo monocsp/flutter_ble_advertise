@@ -23,7 +23,9 @@ public class SwiftTecsenPlugin: NSObject, FlutterPlugin {
                      return
                      }
                     let key = args["UUID"]! //Device UUID
-                    let localName = args["NAME"]! //Device UUID
+                    let localName = args["NAME"]! //name
+                    let txpower = args["txpower"]!
+
                     self.console = Console(rawValue: 0x0202)
                     PeerAdv.shared.updateUUID(uuid: key)
                     PeerAdv.shared.updateLocalNameKey(name: localName)
@@ -73,6 +75,8 @@ public var Push_Service_UUID = "12345678-ffff-ffff-5359-4e4345584954" //외출
 public var Push_Service_Name: String = "Caps8"
 ///public let Push_Service_UUID = "0000b81d-0000-1000-8000-00805f9b34fb" //외출
                                    //4     2    2    2        6
+// public var Push_Service_TxPowerLevel : String = 
+
 public class PeerAdv: NSObject {
     
     //MARK: 싱글톤 선언 시작
@@ -121,6 +125,12 @@ public class PeerAdv: NSObject {
 
     public func updateLocalNameKey(name: String) {
         Push_Service_Name = name
+    }
+    
+    //업데이트 요망
+    public func updateBleTxPower(txpower: String{
+        
+
     }
     
     // MARK: Active
