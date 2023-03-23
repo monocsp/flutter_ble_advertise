@@ -22,9 +22,9 @@ abstract class IBleAdvertise {
   Future<bool> startAdvertise(
       {required String uuid,
       required String bluetoothSetName,
-      AdvertiseOptions advertiseOptions});
+      AdvertiseOptions? advertiseOptions});
 
-  /// open Setting page
+  /// open Bluetooth Setting page
   ///
   /// Support os : Android, iOS
   ///
@@ -42,4 +42,7 @@ abstract class IBleAdvertise {
 
   ///Checked current device activated advertise
   Future<bool> get isActivatedAdvertise;
+
+  ///Checked current device can advertise
+  Future<bool> get isAbleAdvertise;
 }
