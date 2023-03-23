@@ -8,6 +8,8 @@ import 'package:tecsen_plugin/tecsen_ble/iBleAdvertise.dart';
 import 'tecsen_plugin_platform_interface.dart';
 
 /// An implementation of [TecsenPluginPlatform] that uses method channels.
+///
+/// The dependency on other packages is in dart.io.
 class TecsenAndroidPlugin extends TecsenPluginPlatform {
   TecsenAndroidPlugin(super.channel);
 
@@ -87,8 +89,8 @@ class TecsenIoSPlugin extends TecsenPluginPlatform {
       TecsenAdvertiseMode? advertiseMode}) async {
     bool result = false;
     try {
-      result = await channel
-          .invokeMethod('advertise', {"UUID": uuid, "NAME": bluetoothSetName});
+      result = await channel.invokeMethod(
+          'advertise', {"UUID": uuid, "NAME": bluetoothSetName});
     } catch (e) {
       log("IOS START ADVERTISE ERROR : $e");
       result = false;
@@ -131,29 +133,6 @@ enum BleTXPower {
   const BleTXPower(this.toInteger);
 }
 
-/// The state of Ble AdvertiseMode
-///
-/// More information about Ble AdvertiseMdoe at
-///
-///
-/// The usual flow of state is as follows :
-///
-/// 1. [lowPower], This mode is intended for use cases where power consumption is a critical factor. The advertising interval is set to 1.28 seconds, which is the longest possible interval, and the advertising power is set to the lowest possible value. This mode is suitable for devices that need to advertise frequently, but do not require a fast connection.
-///
-/// 2. [balanced], This mode is intended for use cases where a balance between power consumption and advertising frequency is required. The advertising interval is set to 0.5 seconds, and the advertising power is set to a medium value. This mode is suitable for devices that need to advertise frequently and require a reasonably fast connection.
-///
-/// 3. [lowLatency], This mode is intended for use cases where a fast connection is required, and power consumption is less critical. The advertising interval is set to the shortest possible interval, which is 0.1 seconds, and the advertising power is set to the highest possible value. This mode is suitable for devices that require a fast connection and do not need to advertise frequently.
-
-enum AdvertiseMode {
-  lowPower(0),
-  balanced(1),
-  lowLatency(2);
-
-  final int toInteger;
-
-  const AdvertiseMode(this.toInteger);
-}
-
 ///텍센 블루투스 오류가발생하면 잡을때 쓰는 enum
 enum TecsenBluetoothErrorCode {
   BluetoothNoSupport("0"),
@@ -166,3 +145,15 @@ enum TecsenBluetoothErrorCode {
   const TecsenBluetoothErrorCode(this.toInteger);
   String get errorCode => toInteger;
 }
+
+// INativeLibrary NativeLibrary =
+//     NativeLibraryFactory.create(_libraryTargetPlatform());
+
+// NativeLibraryTargetPlatform _libraryTargetPlatform() {
+//   if (Platform.isAndroid) {
+//     return NativeLibraryTargetPlatform.Android;
+//   }
+//   if (Platform.isIOS) return NativeLibraryTargetPlatform.iOS;
+//   throw NativeLibraryException(
+//       'Target Error, DOES NOT SUPPORT CURRENT PLATFORM ');
+// }
