@@ -41,8 +41,12 @@ abstract class IBleAdvertise {
   Future<bool> stopAdvertise();
 
   ///Checked current device activated advertise
+  ///
+  /// Support os : Android, iOS
   Future<bool> get isActivatedAdvertise;
 
   ///Checked current device can advertise
+  ///
+  /// Support os : Android, iOS
   Future<bool> get isAbleAdvertise;
 }

@@ -145,15 +145,3 @@ enum TecsenBluetoothErrorCode {
   const TecsenBluetoothErrorCode(this.toInteger);
   String get errorCode => toInteger;
 }
-
-// INativeLibrary NativeLibrary =
-//     NativeLibraryFactory.create(_libraryTargetPlatform());
-
-// NativeLibraryTargetPlatform _libraryTargetPlatform() {
-//   if (Platform.isAndroid) {
-//     return NativeLibraryTargetPlatform.Android;
-//   }
-//   if (Platform.isIOS) return NativeLibraryTargetPlatform.iOS;
-//   throw NativeLibraryException(
-//       'Target Error, DOES NOT SUPPORT CURRENT PLATFORM ');
-// }
