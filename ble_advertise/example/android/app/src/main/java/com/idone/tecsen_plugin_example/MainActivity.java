@@ -1,4 +1,4 @@
-package com.idone.tecsen_plugin_example;
+package com.pcs.ble_advertisement_example;
 
 import android.Manifest;
 

@@ -29,6 +29,7 @@ class AdvertiseOptions {
 
   // final serviceData;
   // final trans
+
   AdvertiseOptions(
       {this.advertiseInterval, this.connectable, this.manufacturerData});
 }

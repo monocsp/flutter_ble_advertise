@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.idone.tecsen_plugin_example">
+    package="com.pcs.ble_advertisement_example">
 
 
     <!-- android 12 add -->
@@ -23,7 +23,7 @@
 
     
    <application
-        android:label="tecsen_plugin_example"
+        android:label="ble_advertisement_example"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

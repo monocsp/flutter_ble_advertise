@@ -1,13 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:tecsen_plugin/tecsen_ble/platform_ble.dart';
-
-import 'package:tecsen_plugin/tecsen_plugin_method_channel.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,7 +62,8 @@ class _MyAppState extends State<MyApp> {
                 DateFormat dateFormat = DateFormat('yyMM-ddHH-mmss');
                 String date = dateFormat.format(DateTime.now()).toString();
                 bool t = await TecsenLibrary.startAdvertise(
-                    bluetoothSetName: "Caps8", uuid: "00000000-$date-0C0C54534447");
+                    bluetoothSetName: "Caps8",
+                    uuid: "00000000-$date-0C0C54534447");
                 log("TTT : $t");
 
                 // await MethodChannelTecsenPlugin.tecsenIoSMethodChannel
@@ -80,7 +78,8 @@ class _MyAppState extends State<MyApp> {
                 log("Button");
               },
               child: Center(
-                child: Container(color: Colors.green, child: const Text('Open Button')),
+                child: Container(
+                    color: Colors.green, child: const Text('Open Button')),
               ),
             ),
             GestureDetector(
@@ -88,7 +87,9 @@ class _MyAppState extends State<MyApp> {
                 TecsenLibrary.openBlePage();
               },
               child: Center(
-                child: Container(color: Colors.red, child: const Text('BLE setting open')),
+                child: Container(
+                    color: Colors.red,
+                    child: const Text('BLE setting open')),
               ),
             ),
           ],

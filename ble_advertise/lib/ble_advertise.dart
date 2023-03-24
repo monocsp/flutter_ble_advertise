@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:tecsen_plugin/model/enum/native_channel_name.dart';
-import 'package:tecsen_plugin/platform_advertise/android/android_advertise.dart';
-import 'package:tecsen_plugin/platform_advertise/ios/ios_advertise.dart';
-import 'package:tecsen_plugin/repository/advertise_exceptions.dart';
-import 'package:tecsen_plugin/repository/advertise_lib_abstract.dart';
+import 'package:ble_advertisement/model/enum/native_channel_name.dart';
+import 'package:ble_advertisement/platform_advertise/android/android_advertise.dart';
+import 'package:ble_advertisement/platform_advertise/ios/ios_advertise.dart';
+import 'package:ble_advertisement/repository/advertise_exceptions.dart';
+import 'package:ble_advertisement/repository/advertise_lib_abstract.dart';
 
 class BleAdvertise {
   /// Ble Advertise get instance.

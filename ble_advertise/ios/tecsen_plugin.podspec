@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint tecsen_plugin.podspec` to validate before publishing.
+# Run `pod lib lint ble_advertisement.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'tecsen_plugin'
+  s.name             = 'ble_advertisement'
   s.version          = '0.0.1'
   s.summary          = 'A new Flutter plugin project.'
   s.description      = <<-DESC

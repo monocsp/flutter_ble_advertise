@@ -1,6 +1,6 @@
-# tecsen_plugin_example
+# ble_advertisement_example
 
-Demonstrates how to use the tecsen_plugin plugin.
+Demonstrates how to use the ble_advertisement plugin.
 
 ## Getting Started
 

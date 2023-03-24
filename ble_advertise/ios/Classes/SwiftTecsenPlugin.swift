@@ -5,7 +5,7 @@ import CoreBluetooth
 public class SwiftTecsenPlugin: NSObject, FlutterPlugin {
   
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "tecsen_plugin_ios", binaryMessenger: registrar.messenger())
+    let channel = FlutterMethodChannel(name: "ble_advertisement_ios", binaryMessenger: registrar.messenger())
     let instance = SwiftTecsenPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }

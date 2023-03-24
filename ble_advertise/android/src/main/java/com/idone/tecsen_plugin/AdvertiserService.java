@@ -1,4 +1,4 @@
-// package com.idone.tecsen_plugin;
+// package com.pcs.ble_advertisement;
 // import android.Manifest;
 // import android.annotation.SuppressLint;
 // import android.app.Notification;

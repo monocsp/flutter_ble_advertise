@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:tecsen_plugin/advertise_options.dart';
-import 'package:tecsen_plugin/tecsen_plugin_method_channel.dart';
 
 /// Ble Advertisement abstract class
 ///

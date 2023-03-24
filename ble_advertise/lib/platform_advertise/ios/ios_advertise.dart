@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
-import 'package:tecsen_plugin/advertise_options.dart';
-import 'package:tecsen_plugin/repository/advertise_lib_abstract.dart';
-import 'package:tecsen_plugin/tecsen_plugin_method_channel.dart';
+import 'package:ble_advertisement/model/advertise_options/advertise_options.dart';
+import 'package:ble_advertisement/repository/advertise_lib_abstract.dart';
+import 'package:ble_advertisement/ble_advertisement_method_channel.dart';
 
 class IOSAdvertise implements IBleAdvertise {
   ///For MethodChannel Channel name;

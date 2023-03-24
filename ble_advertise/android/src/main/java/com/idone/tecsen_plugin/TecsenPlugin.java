@@ -1,4 +1,4 @@
-package com.idone.tecsen_plugin;
+package com.pcs.ble_advertisement;
 
 import androidx.annotation.NonNull;
 
@@ -77,7 +77,7 @@ public class TecsenPlugin implements FlutterPlugin, MethodCallHandler,ActivityAw
   private String BLUETOOTH_DEVICE_NAME;
   public static ParcelUuid Advt_UUID = null;
 
-  private static final String METHOD_CHANNEL_NAME = 'com.pcs.flutter_ble_advertisement';
+  rivate static final String METHOD_CHANNEL_NAME = 'com.pcs.flutter_ble_advertisement';
 
   //For StartActivity - ActivityAware
   @Override
@@ -92,7 +92,7 @@ public class TecsenPlugin implements FlutterPlugin, MethodCallHandler,ActivityAw
 
   @Override
   public void onDetachedFromActivity() {
-    //initialize activity
+    //activity 초기화
     activity = null;
     // TODO: your plugin is no longer associated with an Activity.
     // Clean up references.
@@ -104,7 +104,15 @@ public class TecsenPlugin implements FlutterPlugin, MethodCallHandler,ActivityAw
     channel.setMethodCallHandler(this);
 
   }
-
+  /**
+   * 
+   * ffffffff-ffff-ffff-0101-4e4350555348 : 출근
+   * ffffffff-ffff-ffff-0404-4e4350555348 : 퇴근
+   * ffffffff-ffff-ffff-0202-4e4345584954 : 외출
+   * ffffffff-ffff-ffff-0808-4e4345584954 : 복귀
+   * ffffffff-ffff-ffff-0A0A-4e4345584954 : 순찰
+   * ffffffff-ffff-ffff-0C0C-4e4345584954 : 문열기
+   */
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {

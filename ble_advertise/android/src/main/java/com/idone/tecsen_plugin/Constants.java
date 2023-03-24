@@ -1,4 +1,4 @@
-// package com.idone.tecsen_plugin;
+// package com.pcs.ble_advertisement;
 
 // import android.os.ParcelUuid;
 

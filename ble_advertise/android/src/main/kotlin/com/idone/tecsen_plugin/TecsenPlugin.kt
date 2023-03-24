@@ -1,4 +1,4 @@
-package com.idone.tecsen_plugin
+package com.pcs.ble_advertisement
 
 import androidx.annotation.NonNull
 
@@ -17,7 +17,7 @@ class TecsenPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tecsen_plugin")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "ble_advertisement")
     channel.setMethodCallHandler(this)
   }
 

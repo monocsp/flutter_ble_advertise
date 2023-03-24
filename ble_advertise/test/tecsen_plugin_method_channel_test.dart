@@ -1,10 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tecsen_plugin/tecsen_plugin_method_channel.dart';
+import 'package:ble_advertisement/ble_advertisement_method_channel.dart';
 
 void main() {
   MethodChannelTecsenPlugin platform = MethodChannelTecsenPlugin();
-  const MethodChannel channel = MethodChannel('tecsen_plugin');
+  const MethodChannel channel = MethodChannel('ble_advertisement');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 

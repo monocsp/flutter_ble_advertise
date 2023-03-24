@@ -1,4 +1,4 @@
-name: tecsen_plugin
+name: ble_advertisement
 description: A new Flutter plugin project.
 version: 0.0.1
 homepage:
@@ -36,7 +36,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.idone.tecsen_plugin
+        package: com.pcs.ble_advertisement
         pluginClass: TecsenPlugin
       ios:
         pluginClass: TecsenPlugin

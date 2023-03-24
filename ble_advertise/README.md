@@ -1,4 +1,4 @@
-# tecsen_plugin
+# ble_advertisement
 
 A new Flutter plugin project.
 

@@ -1,7 +1,7 @@
-enum BleAdvertiseTargetPlatform {
+enum NativeLibraryTargetPlatform {
   Android(channel: 'com.pcs.flutter_ble_advertisement'),
   iOS(channel: 'com.pcs.flutter_ble_advertisement');
 
   final String channel;
-  const BleAdvertiseTargetPlatform({required this.channel});
+  const NativeLibraryTargetPlatform({required this.channel});
 }

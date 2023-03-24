@@ -1,6 +1,3 @@
-import 'package:tecsen_plugin/tecsen_ble/iBleAdvertise.dart';
-import 'package:tecsen_plugin/tecsen_plugin_method_channel.dart';
-
 class IOSAdvertise implements IBleAdvertise {
   @override
   // TODO: implement isActivatedAdvertise

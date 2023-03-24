@@ -1,4 +1,4 @@
-group 'com.idone.tecsen_plugin'
+group 'com.pcs.ble_advertisement'
 version '1.0'
 
 buildscript {
