@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/services.dart';
+import 'package:ble_advertisement/model/advertise_options/advertise_options.dart';
 
 /// Ble Advertisement abstract class
 ///
@@ -29,7 +27,7 @@ abstract class IBleAdvertise {
   /// Android device go to bluetooth setting page
   ///
   /// iOS go to bluetooth setting page
-  Future<bool> openBleSettingPage();
+  Future<bool> get openBleSettingPage;
 
   /// Stop Advertise
   ///

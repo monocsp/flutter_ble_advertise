@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:ble_advertisement/model/advertise_options/android_advertise_options.dart';
+
 class AdvertiseOptions {
   /// Android, iOS
   ///
@@ -22,7 +24,7 @@ class AdvertiseOptions {
   /// The manufacturer data of a peripheral.
   ///
   /// Android set to AdvertiseData.Builder.addManufacturerData
-  final Uint8List? manufacturerData;
+  final AdvertiseManufactureOptions? advertiseManufactureOptions;
 
   // final flags;
   // final transmitPowerLevel;
@@ -31,5 +33,7 @@ class AdvertiseOptions {
   // final trans
 
   AdvertiseOptions(
-      {this.advertiseInterval, this.connectable, this.manufacturerData});
+      {this.advertiseInterval,
+      this.connectable,
+      this.advertiseManufactureOptions});
 }

@@ -1,30 +1,69 @@
+import 'dart:developer';
+
+import 'package:ble_advertisement/model/advertise_options/advertise_options.dart';
+import 'package:ble_advertisement/model/enum/native_channel_name.dart';
+import 'package:ble_advertisement/repository/advertise_lib_abstract.dart';
+import 'package:flutter/services.dart';
+
 class AndroidAdvertise implements IBleAdvertise {
-  @override
-  // TODO: implement isActivatedAdvertise
-  Future<bool> get isActivatedAdvertise => throw UnimplementedError();
+  final MethodChannel channel;
+  AndroidAdvertise({required this.channel});
 
   @override
-  Future<bool> openBleSettingPage() {
-    // TODO: implement openBleSettingPage
-    throw UnimplementedError();
+  Future<bool> get isActivatedAdvertise async {
+    try {
+      return await channel
+          .invokeMethod(AdvertiseMethodChannel.isActivatedAdvertise.name);
+    } catch (e) {
+      log('[BLE ADVERTISE in openBleSettingPage ERROR]  : $e');
+      return false;
+    }
   }
 
   @override
-  Future<bool> stopAdvertise() {
-    // TODO: implement stopAdvertise
-    throw UnimplementedError();
+  Future<bool> get openBleSettingPage async {
+    try {
+      return await channel
+          .invokeMethod(AdvertiseMethodChannel.openBleSettingPage.name);
+    } catch (e) {
+      log('[BLE ADVERTISE in openBleSettingPage ERROR]  : $e');
+      return false;
+    }
   }
 
   @override
-  // TODO: implement isAbleAdvertise
-  Future<bool> get isAbleAdvertise => throw UnimplementedError();
+  Future<bool> stopAdvertise() async {
+    try {
+      return await channel
+          .invokeMethod(AdvertiseMethodChannel.stopAdvertise.name);
+    } catch (e) {
+      log('[BLE ADVERTISE in stopAdvertise ERROR] : $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> get isAbleAdvertise async {
+    try {
+      return await channel
+          .invokeMethod(AdvertiseMethodChannel.isAbleAdvertise.name);
+    } catch (e) {
+      log('[BLE ADVERTISE in isAbleAdvertise ERROR]  : $e');
+      return false;
+    }
+  }
 
   @override
   Future<bool> startAdvertise(
       {required String uuid,
       required String bluetoothSetName,
-      AdvertiseOptions? advertiseOptions}) {
-    // TODO: implement startAdvertise
-    throw UnimplementedError();
+      AdvertiseOptions? advertiseOptions}) async {
+    try {
+      return await channel
+          .invokeMethod(AdvertiseMethodChannel.startAdvertise.name);
+    } catch (e) {
+      log('[BLE ADVERTISE in startAdvertise ERROR] : $e');
+      return false;
+    }
   }
 }

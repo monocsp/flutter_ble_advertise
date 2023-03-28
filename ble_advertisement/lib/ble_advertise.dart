@@ -11,10 +11,10 @@ class BleAdvertise {
   /// Ble Advertise get instance.
   ///
   /// Set whether the advertising type is connectable
-  static IBleAdvertise instance() {
+  static IBleAdvertise getInstance() {
     BleAdvertiseTargetPlatform platform = _setCurrentPlatform();
     switch (platform) {
-      case BleAdvertiseTargetPlatform.Android:
+      case BleAdvertiseTargetPlatform.android:
         return AndroidAdvertise(channel: MethodChannel(platform.channel));
 
       case BleAdvertiseTargetPlatform.iOS:
@@ -27,7 +27,7 @@ class BleAdvertise {
   }
 
   static BleAdvertiseTargetPlatform _setCurrentPlatform() {
-    if (Platform.isAndroid) return BleAdvertiseTargetPlatform.Android;
+    if (Platform.isAndroid) return BleAdvertiseTargetPlatform.android;
     if (Platform.isIOS) return BleAdvertiseTargetPlatform.iOS;
     throw NoSupportCurrentDevice(
         'DOES NOT SUPPORT CURRENT PLATFORM, Only Support Android or iOS ');
