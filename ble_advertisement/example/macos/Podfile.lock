@@ -1,0 +1,22 @@
+PODS:
+  - ble_advertisement (0.0.1):
+    - FlutterMacOS
+  - FlutterMacOS (1.0.0)
+
+DEPENDENCIES:
+  - ble_advertisement (from `Flutter/ephemeral/.symlinks/plugins/ble_advertisement/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+
+EXTERNAL SOURCES:
+  ble_advertisement:
+    :path: Flutter/ephemeral/.symlinks/plugins/ble_advertisement/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+
+SPEC CHECKSUMS:
+  ble_advertisement: 2f4451df2c023236844405676e3d3dfc5787119d
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+
+PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
+
+COCOAPODS: 1.11.3

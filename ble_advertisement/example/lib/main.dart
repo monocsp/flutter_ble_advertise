@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ble_advertisement/ble_advertise.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -34,8 +36,9 @@ class _MyAppState extends State<MyApp> {
           child: Text('Running on: '),
         ),
         floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              bleAdvertise.openBleSettingPage;
+            onPressed: () async {
+              bool isthis = await bleAdvertise.isAbleAdvertise;
+              log(isthis.toString());
             },
             child: Icon(Icons.ac_unit_rounded)),
       ),

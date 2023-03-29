@@ -33,12 +33,10 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.os.Handler;
 import android.util.Log;
-import android.bluetooth.le.AdvertiseCallback;
-import android.bluetooth.le.AdvertiseData;
-import android.bluetooth.le.AdvertiseSettings;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.pm.PackageManager;
+
 
 /** BleAdvertisementPlugin */
 ///FlutterPlugin : flutter plugin 이용
@@ -57,8 +55,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   /// when the Flutter Engine is detached from the Activity
   private static final String TAG = BleAdvertisementPlugin.class.getSimpleName();
 
-  public static final String ADVERTISING_FAILED = "com.tecsen.brucegetqrbd.advertising_failed";
-  public static final String ADVERTISING_FAILED_EXTRA_CODE = "failureCode";
+  
   private MethodChannel channel;
   private static Activity activity;
   ///for android background service intent
@@ -76,6 +73,8 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   private String BLUETOOTH_DEVICE_NAME;
   public static ParcelUuid Advt_UUID = null;
 
+  private BleAdvertisementManager bleAdvertisementManager;
+
   private static final String METHOD_CHANNEL_NAME = "com.pcs.flutter_ble_advertisement_android";
 
   //For StartActivity - ActivityAware
@@ -86,6 +85,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       activity = activityPluginBinding.getActivity();
       //현재 class에서 activityresult 사용가능
       activityPluginBinding.addActivityResultListener(this);
+      bleAdvertisementManager = new BleAdvertisementManager(activity);
     
   }
 
@@ -93,6 +93,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   public void onDetachedFromActivity() {
     //activity 초기화
     activity = null;
+    bleAdvertisementManager = null;
     // TODO: your plugin is no longer associated with an Activity.
     // Clean up references.
   }
@@ -116,18 +117,31 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
 
-    ///블루투스 세팅페이지 오픈
+    ///open Bluetooth setting page
     if(call.method.equals(AdvertiseMethodChannel.openBleSettingPage.getName())){
       try{
         Intent intentOpenBluetoothSettings = new Intent();
         intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS); 
         activity.startActivityForResult(intentOpenBluetoothSettings,0); 
-        // startActivity(new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS));
         result.success(true);
       }catch(Exception e){
         result.error("","",e);
       }
       return;
+    }
+
+    if(call.method.equals(AdvertiseMethodChannel.isAbleAdvertise.getName())){
+          try{
+        boolean confirmPermission = bleAdvertisementManager.checkAbleBluetooth();
+        if(confirmPermission){
+        result.success(true);
+        }
+        result.success(false);
+      }catch(Exception e){
+        result.error("","",e);
+      }
+      return;
+    
     }
 
     ///Method 호출 시 작동하는 plugin 부분
@@ -206,6 +220,21 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       }
       return;
     }
+
+  if(call.method.equals(AdvertiseMethodChannel.isAbleAdvertise.getName())){
+   try{
+        
+        result.success(true);
+      }catch(Exception e){
+
+        System.out.println("TECSEN distory ERROR IOException!");
+        result.error("4","TECSEN ERROR",e);
+      }
+      return;
+  
+  
+  }
+
 
     result.notImplemented();
     return;
@@ -337,12 +366,11 @@ private void stopAdvertising() {
 private void startAdvertising() {
   //    goForeground();
   
-  
   if (mAdvertiseCallback == null) {
     System.out.println("ADVERTISE SETTING");
       AdvertiseSettings settings = buildAdvertiseSettings();  
       AdvertiseData data = buildAdvertiseData();
-      mAdvertiseCallback = new BleAdvertiseCallback();
+      mAdvertiseCallback = new BleAdvertiseCallback(activity);
 
       if (mBluetoothLeAdvertiser != null) {
         
@@ -414,13 +442,6 @@ private AdvertiseData buildAdvertiseData() {
 * Builds and sends a broadcast intent indicating Advertising has failed. Includes the error
 * code as an extra. This is intended to be picked up by the {@code AdvertiserFragment}.
 */
-private void sendFailureIntent(int errorCode){
-  
-  Intent failureIntent = new Intent();
-  failureIntent.setAction(ADVERTISING_FAILED);
-  failureIntent.putExtra(ADVERTISING_FAILED_EXTRA_CODE, errorCode);
-  activity.sendBroadcast(failureIntent);
-}
 
 
 }
