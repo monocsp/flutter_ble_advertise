@@ -2,11 +2,11 @@ import Flutter
 import UIKit
 import CoreBluetooth
 
-public class SwiftTecsenPlugin: NSObject, FlutterPlugin {
+public class SwiftBlePlugin: NSObject, FlutterPlugin {
   
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "com.pcs.flutter_ble_advertisement_ios", binaryMessenger: registrar.messenger())
-    let instance = SwiftTecsenPlugin()
+    let instance = SwiftBlePlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
     let peerAdv = PeerAdv.shared

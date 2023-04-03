@@ -26,7 +26,7 @@ public class BleAdvertisementManager{
    private String BLUETOOTH_DEVICE_NAME;
    // public static ParcelUuid Advt_UUID = null;
 
-   //Check bluetooth permission in androidManifest
+   // Check bluetooth permission in androidManifest
 
    public BleAdvertisementManager(Activity activity){
       this.activity = activity;
@@ -34,18 +34,32 @@ public class BleAdvertisementManager{
 
 
    private boolean hasBluetoothConnectManifestPermission(){
-   return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED;
+   int currentDeviceApiLevel = Integer.valueOf(android.os.Build.VERSION.SDK);
+
+   if(currentDeviceApiLevel>31){
+      return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED;
+   }
+   return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED;
+
+   
    }
 
-   //Check bluetooth permission in androidManifest
-   //this advertise permission for android12 (api 31)
+   // Check bluetooth permission in androidManifest
+   // this advertise permission for android12 (api 31)
    private boolean hasBluetoothAdvertiseManifestPermission(){
+   int currentDeviceApiLevel = Integer.valueOf(android.os.Build.VERSION.SDK);
+
+   if(currentDeviceApiLevel>31){
    return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADVERTISE) == PackageManager.PERMISSION_GRANTED;
    }
+   return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED;
    
-   //Check all about bluetooth permission in manifest
+   }
+   
+   // Check all about bluetooth permission in manifest
    private boolean checkBluetoothManifestPermission(){
     boolean hasBluetoothConnectPermission = hasBluetoothConnectManifestPermission();
+    
       if(!hasBluetoothConnectPermission){
          Log.e(TAG, "[REQUIRED ANDROID BLUETOOTH PERMISSION] : Please Check permission bluetooth connect in AndroidManifest.xml");
          return false;
@@ -97,7 +111,6 @@ public class BleAdvertisementManager{
      if(!isAbleBluetoothManifestPermission) {return false;}
    boolean isAbleBluetooth = checkCurrentDeviceAboutBluetooth();
    if(!isAbleBluetooth){return false;}
-        
 
 
       return true;

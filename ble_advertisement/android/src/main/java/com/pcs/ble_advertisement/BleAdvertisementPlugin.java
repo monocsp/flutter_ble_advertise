@@ -135,6 +135,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
         boolean confirmPermission = bleAdvertisementManager.checkAbleBluetooth();
         if(confirmPermission){
         result.success(true);
+        return;
         }
         result.success(false);
       }catch(Exception e){
@@ -155,9 +156,9 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       try{
         BLUETOOTH_DEVICE_NAME = call.argument("NAME");
         data = call.argument("DATA");
-        if(BLUETOOTH_DEVICE_NAME == null){result.error("TECSEN ERROR","BLUETOOTH DEVICE NAME NULL POINTER EXCEPTION ","");
+        if(BLUETOOTH_DEVICE_NAME == null){result.error("Ble ERROR","BLUETOOTH DEVICE NAME NULL POINTER EXCEPTION ","");
       return;}
-        if(data == null){result.error("TECSEN ERROR","BLUETOOTH DATA NULL POINTER EXCEPTION ","");return;}
+        if(data == null){result.error("Ble ERROR","BLUETOOTH DATA NULL POINTER EXCEPTION ","");return;}
 
         
         Advt_UUID = ParcelUuid.fromString(data);
@@ -201,8 +202,8 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
 
       }catch(Exception e){
         stop();
-        System.out.println("TECSEN advertise ERROR IOException!");
-        result.error("3","TECSEN ERROR",e);
+        System.out.println("Ble advertise ERROR IOException!");
+        result.error("3","Ble ERROR",e);
         
       }
       return;
@@ -215,25 +216,25 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
         result.success(true);
       }catch(Exception e){
 
-        System.out.println("TECSEN distory ERROR IOException!");
-        result.error("4","TECSEN ERROR",e);
+        System.out.println("Ble distory ERROR IOException!");
+        result.error("4","Ble ERROR",e);
       }
       return;
     }
 
-  if(call.method.equals(AdvertiseMethodChannel.isAbleAdvertise.getName())){
-   try{
+  // if(call.method.equals(AdvertiseMethodChannel.isAbleAdvertise.getName())){
+  //  try{
         
-        result.success(true);
-      }catch(Exception e){
+  //       result.success(true);
+  //     }catch(Exception e){
 
-        System.out.println("TECSEN distory ERROR IOException!");
-        result.error("4","TECSEN ERROR",e);
-      }
-      return;
+  //       System.out.println("Ble distory ERROR IOException!");
+  //       result.error("4","Ble ERROR",e);
+  //     }
+  //     return;
   
   
-  }
+  // }
 
 
     result.notImplemented();
