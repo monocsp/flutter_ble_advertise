@@ -18,6 +18,7 @@ abstract class IBleAdvertise {
   Future<bool> startAdvertise(
       {required String uuid,
       required String bluetoothSetName,
+      bool setIncludeDeviceName = true,
       AdvertiseOptions? advertiseOptions});
 
   /// open Bluetooth Setting page

@@ -71,7 +71,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   private int ADVERTISE_TX_POWER;
   private int ADVERTISE_MODE;
   private String BLUETOOTH_DEVICE_NAME;
-  public static ParcelUuid Advt_UUID = null;
+  
 
   private BleAdvertisementManager bleAdvertisementManager;
 
@@ -104,15 +104,6 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
     channel.setMethodCallHandler(this);
 
   }
-  /**
-   * 
-   * ffffffff-ffff-ffff-0101-4e4350555348 : 출근
-   * ffffffff-ffff-ffff-0404-4e4350555348 : 퇴근
-   * ffffffff-ffff-ffff-0202-4e4345584954 : 외출
-   * ffffffff-ffff-ffff-0808-4e4345584954 : 복귀
-   * ffffffff-ffff-ffff-0A0A-4e4345584954 : 순찰
-   * ffffffff-ffff-ffff-0C0C-4e4345584954 : 문열기
-   */
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
@@ -160,7 +151,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       return;}
         if(data == null){result.error("Ble ERROR","BLUETOOTH DATA NULL POINTER EXCEPTION ","");return;}
 
-        
+        ParcelUuid Advt_UUID;
         Advt_UUID = ParcelUuid.fromString(data);
 
         ADVERTISE_TX_POWER = call.argument("TXPOWER");
@@ -270,10 +261,10 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   ///
   public boolean startBLEConnection(){
     ///이미 블루투스가 작동되고 있음.
-    // if(mBluetoothAdapter != null){
-    //   System.out.println("mBluetoothAdapter is Not NUll Already Started Advertise");  
-    //   mBluetoothAdapter = null;
-    //   return false;}
+    if(mBluetoothAdapter != null){
+      Log.e( "mBluetoothAdapter is Not NUll Already Started Advertise");  
+      mBluetoothAdapter = null;
+      return false;}
     
     mBluetoothAdapter = ((BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
     // mBluetoothAdapter = (activity.getSystemService(Context.BLUETOOTH_SERVICE));
@@ -313,7 +304,7 @@ private void initializeBt() {
           BluetoothAdapter mBluetoothAdapter = mBluetoothManager.getAdapter();
           // if (mBluetoothAdapter != null) {
             
-              ///Caps8 Bluetooth Key
+              ///Bluetooth Key
               mBluetoothAdapter.setName(BLUETOOTH_DEVICE_NAME);
               mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
   //         } else {
@@ -370,7 +361,7 @@ private void startAdvertising() {
   if (mAdvertiseCallback == null) {
     System.out.println("ADVERTISE SETTING");
       AdvertiseSettings settings = buildAdvertiseSettings();  
-      AdvertiseData data = buildAdvertiseData();
+      AdvertiseData data = setAdvertiseData();
       mAdvertiseCallback = new BleAdvertiseCallback(activity);
 
       if (mBluetoothLeAdvertiser != null) {
@@ -414,9 +405,7 @@ private AdvertiseSettings buildAdvertiseSettings() {
   return settingsBuilder.build();
 }
 
-///Advertise Data 부분 uuid를 태워서 전송
-private AdvertiseData buildAdvertiseData() {
-
+/// Advertise 부분 uuid를 태워서 전송
   /**
    * Note: There is a strict limit of 31 Bytes on packets sent over BLE Advertisements.
    *  This includes everything put into AdvertiseData including UUIDs, device info, &
@@ -425,16 +414,23 @@ private AdvertiseData buildAdvertiseData() {
    *  AdvertiseCallback.ADVERTISE_FAILED_DATA_TOO_LARGE. Catch this error in the
    *  onStartFailure() method of an AdvertiseCallback implementation.
    */
+private AdvertiseData setAdvertiseData(ParcelUuid parcelUuid,boolean  setIncludeDeviceName, int manufactureId, byte[] manufacturerSpecificData ) {
+
   AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
-  dataBuilder.addServiceUuid(Advt_UUID);
-  Log.i(TAG, "Advt_UUID : "+Advt_UUID.getUuid().toString());
-  dataBuilder.setIncludeDeviceName(true);
+  datatBuilder.addManufactureData(manufactureId, manufacturerSpecificData);
+  dataBuilder.addServiceUuid(parcelUuid);
+  dataBuilder.setIncludeDeviceName(setIncludeDeviceName);
 
   /* For example - this will cause advertising to fail (exceeds size limit) */
   //    String failureData = "asdghkajsghalkxcjhfa;sghtalksjcfhalskfjhasldkjfhdskf";
   //    dataBuilder.addServiceData(Constants.Service_UUID, ADVT_PUSH_SYNC);
 
   return dataBuilder.build();
+}
+
+private AdvertiseSettings setAdvertiseSetting(){
+    AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
+
 }
 
 

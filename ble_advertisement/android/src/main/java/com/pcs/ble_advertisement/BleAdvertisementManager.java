@@ -117,6 +117,46 @@ public class BleAdvertisementManager{
    
    }
 
+   public boolean startAdvertising(){
+      boolean checkBluetoothPermission = checkAbleBluetooth();
+      if(!checkBluetoothPermission){
+       return false;
+      }
+      try{
+      
+      Log.i(TAG,"START Bluetooth Advertise");
+      }catch(Exception e){
+      
+      
+      }
 
+      
+   
+   }
+
+
+///Advertising Bluetooth연결
+private void startAdvertising() {
+  //    goForeground();
+  
+  if (mAdvertiseCallback == null) {
+    
+      AdvertiseSettings settings = buildAdvertiseSettings();  
+      AdvertiseData data = buildAdvertiseData();
+      mAdvertiseCallback = new BleAdvertiseCallback(activity);
+
+      if (mBluetoothLeAdvertiser != null) {
+ 
+          
+// BluetoothAdapter mba=  ((BluetoothManager)activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
+// mba.setName(BLUETOOTH_DEVICE_NAME);
+// BluetoothLeAdvertiser blead = mba.getBluetoothLeAdvertiser();
+// blead.startAdvertising(settings,data,mAdvertiseCallback);
+          mBluetoothLeAdvertiser.startAdvertising(settings, data,
+                  mAdvertiseCallback);
+                  System.out.println("START ADVERTISING!");
+      }
+  }
+}
 
 }

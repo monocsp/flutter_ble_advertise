@@ -1,6 +1,5 @@
-import 'dart:typed_data';
-
-import 'package:ble_advertisement/model/advertise_options/android_advertise_options.dart';
+import 'package:ble_advertisement/model/advertise_options/module/manufacture_data.dart';
+import 'package:ble_advertisement/model/advertise_options/module/service_data.dart';
 
 class AdvertiseOptions {
   /// Android, iOS
@@ -10,7 +9,9 @@ class AdvertiseOptions {
   /// Android set to AdvertisingSetParameters.Builder.setConnectable
   ///
   /// iOS set to CBAdvertisementDataIsConnectable
-  final bool? connectable;
+  ///
+  /// default : true
+  final bool connectable;
 
   /// Android only
   ///
@@ -20,10 +21,9 @@ class AdvertiseOptions {
   final int? advertiseInterval;
 
   /// Android, iOS
-  ///
-  /// The manufacturer data of a peripheral.
-  ///
-  /// Android set to AdvertiseData.Builder.addManufacturerData
+  final AdvertiseServiceData? advertiseServiceData;
+
+  /// Android, ios
   final AdvertiseManufactureOptions? advertiseManufactureOptions;
 
   // final flags;
@@ -32,8 +32,10 @@ class AdvertiseOptions {
   // final serviceData;
   // final trans
 
-  AdvertiseOptions(
-      {this.advertiseInterval,
-      this.connectable,
-      this.advertiseManufactureOptions});
+  AdvertiseOptions({
+    this.advertiseInterval,
+    this.connectable = true,
+    this.advertiseManufactureOptions,
+    this.advertiseServiceData,
+  });
 }

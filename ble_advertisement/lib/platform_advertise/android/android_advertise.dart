@@ -57,6 +57,7 @@ class AndroidAdvertise implements IBleAdvertise {
   Future<bool> startAdvertise(
       {required String uuid,
       required String bluetoothSetName,
+      bool setIncludeDeviceName = true,
       AdvertiseOptions? advertiseOptions}) async {
     try {
       return await channel

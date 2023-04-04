@@ -39,9 +39,25 @@ class _MyAppState extends State<MyApp> {
             onPressed: () async {
               bool isthis = await bleAdvertise.isAbleAdvertise;
               log(isthis.toString());
+              if (isthis) {
+                await bleAdvertise.startAdvertise(
+                    uuid: 'ffffffff-ffff-ffff-0101-4e4350555348',
+                    bluetoothSetName: 'Caps8');
+              }
             },
             child: Icon(Icons.ac_unit_rounded)),
       ),
     );
   }
 }
+
+
+  /**
+   * 
+   * ffffffff-ffff-ffff-0101-4e4350555348 : 출근
+   * ffffffff-ffff-ffff-0404-4e4350555348 : 퇴근
+   * ffffffff-ffff-ffff-0202-4e4345584954 : 외출
+   * ffffffff-ffff-ffff-0808-4e4345584954 : 복귀
+   * ffffffff-ffff-ffff-0A0A-4e4345584954 : 순찰
+   * ffffffff-ffff-ffff-0C0C-4e4345584954 : 문열기
+   */
