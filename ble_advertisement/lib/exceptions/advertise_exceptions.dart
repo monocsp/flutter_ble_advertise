@@ -23,5 +23,5 @@ class CustomException implements Exception {
 /// else Exception
 class NoSupportCurrentDevice extends CustomException {
   NoSupportCurrentDevice([String? message])
-      : super(message, 'NoSupportCurrentDevice');
+      : super(message, '[NoSupportCurrentDevice]');
 }

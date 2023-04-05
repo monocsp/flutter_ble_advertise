@@ -22,6 +22,11 @@ class AdvertiseManufactureOptions {
   /// ios : [NSData]
   final Uint8List manufacturerSpecificData;
 
+  get toMap => {
+        "manufacturerId": manufacturerId,
+        "manufacturerSpecificData": manufacturerSpecificData
+      };
+
   AdvertiseManufactureOptions(
       {this.manufacturerId, required this.manufacturerSpecificData});
 }

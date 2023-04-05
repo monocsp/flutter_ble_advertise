@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ble_advertisement/model/enum/native_channel_name.dart';
 import 'package:ble_advertisement/platform_advertise/android/android_advertise.dart';
 import 'package:ble_advertisement/platform_advertise/ios/ios_advertise.dart';
-import 'package:ble_advertisement/repository/advertise_exceptions.dart';
+import 'package:ble_advertisement/exceptions/advertise_exceptions.dart';
 import 'package:ble_advertisement/repository/advertise_lib_abstract.dart';
 
 class BleAdvertise {

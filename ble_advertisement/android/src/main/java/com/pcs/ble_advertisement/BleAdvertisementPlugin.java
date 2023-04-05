@@ -70,7 +70,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   private Handler mHandler;
   private int ADVERTISE_TX_POWER;
   private int ADVERTISE_MODE;
-  private String BLUETOOTH_DEVICE_NAME;
+
   
 
   private BleAdvertisementManager bleAdvertisementManager;
@@ -136,29 +136,30 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
     
     }
 
-    ///Method 호출 시 작동하는 plugin 부분
     ///들어오는 serial data에 따라서 블루투스가 작동
     if (call.method.equals(AdvertiseMethodChannel.startAdvertise.getName())) {
-      System.out.println("start method");
-      String data;
-      int timeOut;
+      String serviceUuid;
+      String bluetoothName;
+      int advertiseTimeOut;
       int txPower;
       int advertiseMode;
+
+      
       try{
-        BLUETOOTH_DEVICE_NAME = call.argument("NAME");
-        data = call.argument("DATA");
-        if(BLUETOOTH_DEVICE_NAME == null){result.error("Ble ERROR","BLUETOOTH DEVICE NAME NULL POINTER EXCEPTION ","");
+        bluetoothName = call.argument("bluetoothSetName");
+        serviceUuid = call.argument("serviceUuid");
+        if(bluetoothName == null){result.error("[BLE Advertise ERROR]","bluetooth name NULL POINTER EXCEPTION ","");
       return;}
-        if(data == null){result.error("Ble ERROR","BLUETOOTH DATA NULL POINTER EXCEPTION ","");return;}
+        if(serviceUuid == null){result.error("[BLE Advertise ERROR]","bluetooth serviceUuid NULL POINTER EXCEPTION ","");return;}
 
         ParcelUuid Advt_UUID;
-        Advt_UUID = ParcelUuid.fromString(data);
+        Advt_UUID = ParcelUuid.fromString(serviceUuid);
 
-        ADVERTISE_TX_POWER = call.argument("TXPOWER");
-        ADVERTISE_MODE = call.argument("ADVERTISEMODE");
+        // ADVERTISE_TX_POWER = call.argument("TXPOWER");
+        // ADVERTISE_MODE = call.argument("ADVERTISEMODE");
         
-        timeOut = call.argument("TIMEOUT");
-        TIMEOUT = TimeUnit.MILLISECONDS.convert(timeOut, TimeUnit.MILLISECONDS);
+        advertiseTimeOut = call.argument("advertiseTimeOut");
+        TIMEOUT = TimeUnit.MILLISECONDS.convert(advertiseTimeOut, TimeUnit.MILLISECONDS);
 
         // ParcelUuid Advt_Service_UUID = ParcelUuid.fromString(data);
 
@@ -167,11 +168,11 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
           result.error("0","BLUETOOTH ERROR ","THIS DEVICE DOES NOT SUPPORT BLUETOOTH");
           return;
         }
-        ///현재 기기가 bluetooth 권한이 설정되어있는지 체크
-        if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
-          result.error("1","BLUETOOTH TURN OFF ","PERMISSION DENIED");
-          return;
-        }
+        // ///현재 기기가 bluetooth 권한이 설정되어있는지 체크
+        // if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
+        //   result.error("1","BLUETOOTH TURN OFF ","PERMISSION DENIED");
+        //   return;
+        // }
         
         if(!startBLEConnection()){
           System.out.println("CANNOT START BLUETOOTH");
@@ -359,7 +360,7 @@ private void startAdvertising() {
   //    goForeground();
   
   if (mAdvertiseCallback == null) {
-    System.out.println("ADVERTISE SETTING");
+    
       AdvertiseSettings settings = buildAdvertiseSettings();  
       AdvertiseData data = setAdvertiseData();
       mAdvertiseCallback = new BleAdvertiseCallback(activity);
@@ -394,6 +395,7 @@ private AdvertiseSettings buildAdvertiseSettings() {
       //  settingsBuilder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED);
       settingsBuilder.setAdvertiseMode(ADVERTISE_MODE);
       settingsBuilder.setTxPowerLevel(ADVERTISE_TX_POWER);
+      settingsBuilder.setTimeout(1000);
   // settingsBuilder.setAdvertiseMode(AdvertiseSettings.LIMITED_ADVERTISING_MAX_MILLIS);
   // settingsBuilder.setAdvertiseMode(3);
   settingsBuilder.setConnectable(true);
@@ -401,7 +403,7 @@ private AdvertiseSettings buildAdvertiseSettings() {
   
   
   ///Timeout설정
-  // settingsBuilder.setTimeout(1000);
+  
   return settingsBuilder.build();
 }
 

@@ -55,16 +55,29 @@ class IOSAdvertise implements IBleAdvertise {
 
   @override
   Future<bool> startAdvertise(
-      {required String uuid,
+      {String? serviceUuid,
+      advertiseServiceData,
       required String bluetoothSetName,
       bool setIncludeDeviceName = true,
-      AdvertiseOptions? advertiseOptions}) async {
-    try {
-      return await channel
-          .invokeMethod(AdvertiseMethodChannel.startAdvertise.name);
-    } catch (e) {
-      log('[BLE ADVERTISE in startAdvertise ERROR] : $e');
-      return false;
-    }
+      AdvertiseOptions? advertiseOptions}) {
+    assert(
+        (serviceUuid?.isEmpty ?? true) && (advertiseServiceData == null),
+        'MUST SETTING [serviceUuid] or [advertiseServiceData]');
+    throw UnimplementedError();
   }
+
+  // @override
+  // Future<bool> startAdvertise(
+  //     {required String uuid,
+  //     required String bluetoothSetName,
+  //     bool setIncludeDeviceName = true,
+  //     AdvertiseOptions? advertiseOptions}) async {
+  //   try {
+  //     return await channel
+  //         .invokeMethod(AdvertiseMethodChannel.startAdvertise.name);
+  //   } catch (e) {
+  //     log('[BLE ADVERTISE in startAdvertise ERROR] : $e');
+  //     return false;
+  //   }
+  // }
 }

@@ -1,4 +1,5 @@
 import 'package:ble_advertisement/model/advertise_options/advertise_options.dart';
+import 'package:ble_advertisement/model/advertise_options/service_data.dart';
 
 /// Ble Advertisement abstract class
 ///
@@ -16,7 +17,8 @@ abstract class IBleAdvertise {
   ///
 
   Future<bool> startAdvertise(
-      {required String uuid,
+      {String? serviceUuid,
+      AdvertiseServiceData? advertiseServiceData,
       required String bluetoothSetName,
       bool setIncludeDeviceName = true,
       AdvertiseOptions? advertiseOptions});
