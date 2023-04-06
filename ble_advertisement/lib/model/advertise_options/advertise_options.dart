@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:ble_advertisement/exceptions/advertise_exceptions.dart';
 import 'package:ble_advertisement/model/advertise_options/manufacture_data.dart';
+import 'package:ble_advertisement/model/enum/advertise_TxPower.dart';
 
 class AdvertiseOptions {
   /// Android, iOS
@@ -35,20 +39,43 @@ class AdvertiseOptions {
   /// Android data format [ParcelUuid], iOS data format [CCBUUID]
   final String? serviceSolicitationUuid;
 
+  /// Android only
+  ///
+  ///int: Advertising time limit. May not exceed 180000 milliseconds.
+  /// A value of 0 will disable the time limit.
+  ///
+  /// Limit advertising to a given amount of time.
   final int advertiseTimeOut;
 
+  /// Android, iOS
+  ///
+  /// int: Advertising time limit. May not exceed 180000 milliseconds.
+  /// A value of 0 will disable the time limit.
+  ///
+  /// Limit advertising to a given amount of time.
+
+  final AdvertiseTxPower advertiseTxPower;
+
   /// Android, ios
+  ///
+  /// Set advertise TX power level to control the transmission power level for the advertising.
   final AdvertiseManufactureOptions? advertiseManufactureOptions;
 
   get toMap => {
         "connectable": connectable,
         "advertiseInterval": advertiseInterval,
         "serviceSolicitationUuid": serviceSolicitationUuid,
-        "advertiseTimeOut": advertiseTimeOut
+        "advertiseTimeOut": advertiseTimeOut,
+        "advertiseTxPower": Platform.isAndroid
+            ? advertiseTxPower.toAndroid
+            : Platform.isIOS
+                ? advertiseTxPower.toIOS
+                : throw NoSupportCurrentDevice("Advertise Options Error"),
       }..addAll(advertiseManufactureOptions?.toMap ?? {});
 
   AdvertiseOptions(
       {this.advertiseInterval,
+      this.advertiseTxPower = AdvertiseTxPower.medium,
       this.advertiseTimeOut = 1000,
       this.connectable = true,
       this.advertiseManufactureOptions,
