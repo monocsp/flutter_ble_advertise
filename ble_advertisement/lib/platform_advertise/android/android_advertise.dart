@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:ble_advertisement/exceptions/advertise_exceptions.dart';
 import 'package:ble_advertisement/model/advertise_options/advertise_options.dart';
 import 'package:ble_advertisement/model/advertise_options/service_data.dart';
 

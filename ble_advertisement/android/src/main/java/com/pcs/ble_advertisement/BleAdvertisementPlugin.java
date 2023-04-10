@@ -365,9 +365,9 @@ private void startAdvertising() {
       AdvertiseData data = setAdvertiseData();
       mAdvertiseCallback = new BleAdvertiseCallback(activity);
 
-      if (mBluetoothLeAdvertiser != null) {
+      // if (mBluetoothLeAdvertiser != null) {
         
-          if (ActivityCompat.checkSelfPermission(activity,"android.permission.BLUETOOTH_CONNECT") != PackageManager.PERMISSION_GRANTED) {
+      //     if (ActivityCompat.checkSelfPermission(activity,"android.permission.BLUETOOTH_CONNECT") != PackageManager.PERMISSION_GRANTED) {
             
           //     // TODO: Consider calling
           //     //    ActivityCompat#requestPermissions
@@ -376,7 +376,7 @@ private void startAdvertising() {
           //     //                                          int[] grantResults)
           //     // to handle the case where the user grants the permission. See the documentation
           //     // for ActivityCompat#requestPermissions for more de
-          }
+          // }
 
           
 // BluetoothAdapter mba=  ((BluetoothManager)activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
@@ -386,23 +386,17 @@ private void startAdvertising() {
           mBluetoothLeAdvertiser.startAdvertising(settings, data,
                   mAdvertiseCallback);
                   System.out.println("START ADVERTISING!");
-      }
+      // }
   }
 }
 ///Advertise Setting 부분 설정
-private AdvertiseSettings buildAdvertiseSettings() {
+private AdvertiseSettings buildAdvertiseSettings(boolean discoverable,boolean connectable,int timeout,int advertiseMode, int advertiseTxPower) {
   AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
-      //  settingsBuilder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED);
-      settingsBuilder.setAdvertiseMode(ADVERTISE_MODE);
-      settingsBuilder.setTxPowerLevel(ADVERTISE_TX_POWER);
-      settingsBuilder.setTimeout(1000);
-  // settingsBuilder.setAdvertiseMode(AdvertiseSettings.LIMITED_ADVERTISING_MAX_MILLIS);
-  // settingsBuilder.setAdvertiseMode(3);
-  settingsBuilder.setConnectable(true);
-  
-  
-  
-  ///Timeout설정
+  settingsBuilder.setAdvertiseMode(advertiseMode);
+  settingsBuilder.setTxPowerLevel(advertiseTxPower);
+  settingsBuilder.setDiscoverable(discoverable);
+  settingsBuilder.setTimeout(timeout);
+  settingsBuilder.setConnectable(connectable);
   
   return settingsBuilder.build();
 }

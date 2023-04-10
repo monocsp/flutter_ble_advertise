@@ -23,9 +23,13 @@ enum AdvertiseMode {
   lowPower(0),
 
   ///Perform Bluetooth LE advertising in balanced power mode.
+  ///
+  ///This is balanced between advertising frequency and power consumption.
   balanced(1),
 
   ///Perform Bluetooth LE advertising in low latency, high power mode.
+  ///
+  ///This has the highest power consumption and should not be used for continuous background advertising.
   lowLatency(2);
 
   final int toInteger;

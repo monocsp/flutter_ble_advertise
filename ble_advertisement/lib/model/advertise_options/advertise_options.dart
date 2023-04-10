@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ble_advertisement/exceptions/advertise_exceptions.dart';
 import 'package:ble_advertisement/model/advertise_options/manufacture_data.dart';
 import 'package:ble_advertisement/model/enum/advertise_TxPower.dart';
+import 'package:ble_advertisement/model/enum/advertise_mode.dart';
 
 class AdvertiseOptions {
   /// Android, iOS
@@ -61,6 +62,20 @@ class AdvertiseOptions {
   /// Set advertise TX power level to control the transmission power level for the advertising.
   final AdvertiseManufactureOptions? advertiseManufactureOptions;
 
+  /// Android Only
+  ///
+  /// Set advertise mode to control the advertising power and latency.
+  ///
+  /// default : AdvertiseMode.balanced
+  final AdvertiseMode advertiseMode;
+
+  /// Android Only
+  ///
+  /// Set whether the advertisement type should be discoverable or non-discoverable.
+  ///
+  /// default : true
+  final bool discoverable;
+
   get toMap => {
         "connectable": connectable,
         "advertiseInterval": advertiseInterval,
@@ -71,10 +86,16 @@ class AdvertiseOptions {
             : Platform.isIOS
                 ? advertiseTxPower.toIOS
                 : throw NoSupportCurrentDevice("Advertise Options Error"),
-      }..addAll(advertiseManufactureOptions?.toMap ?? {});
+      }
+        ..addAll(advertiseManufactureOptions?.toMap ?? {})
+        ..addAll(Platform.isAndroid
+            ? {"advertiseMode": advertiseMode.toInteger}
+            : {});
 
   AdvertiseOptions(
       {this.advertiseInterval,
+      this.discoverable = true,
+      this.advertiseMode = AdvertiseMode.balanced,
       this.advertiseTxPower = AdvertiseTxPower.medium,
       this.advertiseTimeOut = 1000,
       this.connectable = true,
