@@ -50,7 +50,7 @@ class AndroidAdvertise implements IBleAdvertise {
       return await channel
           .invokeMethod(AdvertiseMethodChannel.isAbleAdvertise.name);
     } catch (e) {
-      log('[BLE ADVERTISE in isAbleAdvertise ERROR]  : $e');
+      log('[BLE ADVERTISE in isAbleAdvertise ERROR] : $e');
       return false;
     }
   }
@@ -63,25 +63,34 @@ class AndroidAdvertise implements IBleAdvertise {
       bool setIncludeDeviceName = true,
       AdvertiseOptions? advertiseOptions}) async {
     assert(
-        (serviceUuid?.isEmpty ?? true) && (advertiseServiceData == null),
+        (serviceUuid?.isEmpty ?? true) == !(advertiseServiceData == null),
         'MUST one setting [serviceUuid] or [advertiseServiceData]');
-
+    log("message");
     if (serviceUuid?.isNotEmpty ?? false) {
       advertiseServiceData =
           AdvertiseServiceData(serviceUuid: serviceUuid!);
     }
-    try {
-      return await channel.invokeMethod(
-          AdvertiseMethodChannel.startAdvertise.name,
-          {
-            "bluetoothSetName": bluetoothSetName,
-            "setIncludeDeviceName": setIncludeDeviceName,
-          }
-            ..addAll(advertiseServiceData!.toMap)
-            ..addAll(advertiseOptions?.toMap ?? {}));
-    } catch (e) {
-      log('[BLE ADVERTISE in startAdvertise ERROR] : $e');
-      return false;
+
+    Map<String, dynamic> result = {
+      "bluetoothSetName": bluetoothSetName,
+      "setIncludeDeviceName": setIncludeDeviceName,
     }
+      ..addAll(advertiseServiceData!.toMap)
+      ..addAll(advertiseOptions?.toMap ?? {"advertiseOptions": false});
+    log("RESULT : $result");
+    return false;
+    // try {
+    //   return await channel.invokeMethod(
+    //       AdvertiseMethodChannel.startAdvertise.name,
+    //       {
+    //         "bluetoothSetName": bluetoothSetName,
+    //         "setIncludeDeviceName": setIncludeDeviceName,
+    //       }
+    //         ..addAll(advertiseServiceData!.toMap)
+    //         ..addAll(advertiseOptions?.toMap ?? {}));
+    // } catch (e) {
+    //   log('[BLE ADVERTISE in startAdvertise ERROR] : $e');
+    //   return false;
+    // }
   }
 }

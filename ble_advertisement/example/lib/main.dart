@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:ble_advertisement/ble_advertise.dart';
+import 'package:ble_advertisement/model/advertise_options/advertise_options.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -37,13 +38,14 @@ class _MyAppState extends State<MyApp> {
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              bool isthis = await bleAdvertise.isAbleAdvertise;
-              log(isthis.toString());
-              if (isthis) {
-                await bleAdvertise.startAdvertise(
-                    uuid: 'ffffffff-ffff-ffff-0101-4e4350555348',
-                    bluetoothSetName: 'Caps8');
-              }
+              // bool isthis = await bleAdvertise.isAbleAdvertise;
+              // log(isthis.toString());
+              // if (isthis) {
+              await bleAdvertise.startAdvertise(
+                  serviceUuid: 'ffffffff-ffff-ffff-0101-4e4350555348',
+                  // advertiseOptions: AdvertiseOptions(),
+                  bluetoothSetName: 'Caps8');
+              // }
             },
             child: Icon(Icons.ac_unit_rounded)),
       ),

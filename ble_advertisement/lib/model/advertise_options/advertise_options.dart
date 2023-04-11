@@ -69,14 +69,17 @@ class AdvertiseOptions {
   /// default : AdvertiseMode.balanced
   final AdvertiseMode advertiseMode;
 
-  /// Android Only
+  /// Android Only in android 14 Coming soon
+  ///
+  ///
   ///
   /// Set whether the advertisement type should be discoverable or non-discoverable.
   ///
   /// default : true
-  final bool discoverable;
+  // final bool discoverable;
 
   get toMap => {
+        "advertiseOptions": true,
         "connectable": connectable,
         "advertiseInterval": advertiseInterval,
         "serviceSolicitationUuid": serviceSolicitationUuid,
@@ -94,7 +97,7 @@ class AdvertiseOptions {
 
   AdvertiseOptions(
       {this.advertiseInterval,
-      this.discoverable = true,
+      // this.discoverable = true,
       this.advertiseMode = AdvertiseMode.balanced,
       this.advertiseTxPower = AdvertiseTxPower.medium,
       this.advertiseTimeOut = 1000,

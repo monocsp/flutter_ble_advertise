@@ -133,24 +133,30 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
         result.error("","",e);
       }
       return;
-    
     }
 
-    ///들어오는 serial data에 따라서 블루투스가 작동
     if (call.method.equals(AdvertiseMethodChannel.startAdvertise.getName())) {
       String serviceUuid;
       String bluetoothName;
       int advertiseTimeOut;
       int txPower;
       int advertiseMode;
+      boolean advertiseOptions;
 
       
       try{
         bluetoothName = call.argument("bluetoothSetName");
+        advertiseOptions = call.argument("advertiseOptions");
         serviceUuid = call.argument("serviceUuid");
         if(bluetoothName == null){result.error("[BLE Advertise ERROR]","bluetooth name NULL POINTER EXCEPTION ","");
       return;}
         if(serviceUuid == null){result.error("[BLE Advertise ERROR]","bluetooth serviceUuid NULL POINTER EXCEPTION ","");return;}
+
+        if(!advertiseOptions){
+          ///options이 없다면
+        }
+
+        ///있다면
 
         ParcelUuid Advt_UUID;
         Advt_UUID = ParcelUuid.fromString(serviceUuid);
@@ -263,7 +269,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   public boolean startBLEConnection(){
     ///이미 블루투스가 작동되고 있음.
     if(mBluetoothAdapter != null){
-      Log.e( "mBluetoothAdapter is Not NUll Already Started Advertise");  
+      // Log.e( "mBluetoothAdapter is Not NUll Already Started Advertise");  
       mBluetoothAdapter = null;
       return false;}
     
@@ -297,17 +303,17 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
 
 private void initializeBt() {
 
-  // if (mBluetoothLeAdvertiser == null) {
+  // // if (mBluetoothLeAdvertiser == null) {
     
-      BluetoothManager mBluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
-      // if (mBluetoothManager != null) {
+  //     BluetoothManager mBluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
+  //     // if (mBluetoothManager != null) {
   
-          BluetoothAdapter mBluetoothAdapter = mBluetoothManager.getAdapter();
-          // if (mBluetoothAdapter != null) {
+  //         BluetoothAdapter mBluetoothAdapter = mBluetoothManager.getAdapter();
+  //         // if (mBluetoothAdapter != null) {
             
-              ///Bluetooth Key
-              mBluetoothAdapter.setName(BLUETOOTH_DEVICE_NAME);
-              mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
+  //             ///Bluetooth Key
+  //             mBluetoothAdapter.setName(BLUETOOTH_DEVICE_NAME);
+  //             mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
   //         } else {
   //             System.out.println("initializeBt BLUETOOTH ADAPTER NULL ERROR ");
   //             // Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
@@ -332,8 +338,8 @@ private void setTimeout() {
 private void stop(){
       stopAdvertising();
         // finalizeBt();
-        Advt_UUID = null;
-        BLUETOOTH_DEVICE_NAME = null;
+        
+
         if(mHandler == null){return;}
         if(timeoutRunnable == null){return;
           
@@ -359,42 +365,45 @@ private void stopAdvertising() {
 private void startAdvertising() {
   //    goForeground();
   
-  if (mAdvertiseCallback == null) {
+//   if (mAdvertiseCallback == null) {
     
-      AdvertiseSettings settings = buildAdvertiseSettings();  
-      AdvertiseData data = setAdvertiseData();
-      mAdvertiseCallback = new BleAdvertiseCallback(activity);
+//       AdvertiseSettings settings = buildAdvertiseSettings( );  
+//       AdvertiseData data = setAdvertiseData();
+//       mAdvertiseCallback = new BleAdvertiseCallback(activity);
 
-      // if (mBluetoothLeAdvertiser != null) {
+//       // if (mBluetoothLeAdvertiser != null) {
         
-      //     if (ActivityCompat.checkSelfPermission(activity,"android.permission.BLUETOOTH_CONNECT") != PackageManager.PERMISSION_GRANTED) {
+//       //     if (ActivityCompat.checkSelfPermission(activity,"android.permission.BLUETOOTH_CONNECT") != PackageManager.PERMISSION_GRANTED) {
             
-          //     // TODO: Consider calling
-          //     //    ActivityCompat#requestPermissions
-          //     // here to request the missing permissions, and then overriding
-          //     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-          //     //                                          int[] grantResults)
-          //     // to handle the case where the user grants the permission. See the documentation
-          //     // for ActivityCompat#requestPermissions for more de
-          // }
+//           //     // TODO: Consider calling
+//           //     //    ActivityCompat#requestPermissions
+//           //     // here to request the missing permissions, and then overriding
+//           //     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//           //     //                                          int[] grantResults)
+//           //     // to handle the case where the user grants the permission. See the documentation
+//           //     // for ActivityCompat#requestPermissions for more de
+//           // }
 
           
-// BluetoothAdapter mba=  ((BluetoothManager)activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
-// mba.setName(BLUETOOTH_DEVICE_NAME);
-// BluetoothLeAdvertiser blead = mba.getBluetoothLeAdvertiser();
-// blead.startAdvertising(settings,data,mAdvertiseCallback);
-          mBluetoothLeAdvertiser.startAdvertising(settings, data,
-                  mAdvertiseCallback);
-                  System.out.println("START ADVERTISING!");
-      // }
-  }
+// // BluetoothAdapter mba=  ((BluetoothManager)activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
+// // mba.setName(BLUETOOTH_DEVICE_NAME);
+// // BluetoothLeAdvertiser blead = mba.getBluetoothLeAdvertiser();
+// // blead.startAdvertising(settings,data,mAdvertiseCallback);
+//           mBluetoothLeAdvertiser.startAdvertising(settings, data,
+//                   mAdvertiseCallback);
+//                   System.out.println("START ADVERTISING!");
+//       // }
+//   }
 }
 ///Advertise Setting 부분 설정
 private AdvertiseSettings buildAdvertiseSettings(boolean discoverable,boolean connectable,int timeout,int advertiseMode, int advertiseTxPower) {
   AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
+  // int currentDeviceApiLevel = Integer.valueOf(android.os.Build.VERSION.SDK);
+
   settingsBuilder.setAdvertiseMode(advertiseMode);
   settingsBuilder.setTxPowerLevel(advertiseTxPower);
-  settingsBuilder.setDiscoverable(discoverable);
+  ///Will be add in Android 14 Coming soon...  
+  // settingsBuilder.setDiscoverable(discoverable);
   settingsBuilder.setTimeout(timeout);
   settingsBuilder.setConnectable(connectable);
   
@@ -413,7 +422,7 @@ private AdvertiseSettings buildAdvertiseSettings(boolean discoverable,boolean co
 private AdvertiseData setAdvertiseData(ParcelUuid parcelUuid,boolean  setIncludeDeviceName, int manufactureId, byte[] manufacturerSpecificData ) {
 
   AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
-  datatBuilder.addManufactureData(manufactureId, manufacturerSpecificData);
+  dataBuilder.addManufacturerData(manufactureId, manufacturerSpecificData);
   dataBuilder.addServiceUuid(parcelUuid);
   dataBuilder.setIncludeDeviceName(setIncludeDeviceName);
 
@@ -424,10 +433,10 @@ private AdvertiseData setAdvertiseData(ParcelUuid parcelUuid,boolean  setInclude
   return dataBuilder.build();
 }
 
-private AdvertiseSettings setAdvertiseSetting(){
-    AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
+// private AdvertiseSettings setAdvertiseSetting(){
+//     AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
 
-}
+// }
 
 
 
