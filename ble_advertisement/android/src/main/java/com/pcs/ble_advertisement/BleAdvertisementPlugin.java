@@ -142,17 +142,20 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       int txPower;
       int advertiseMode;
       boolean advertiseOptions;
+      
 
       
       try{
-        bluetoothName = call.argument("bluetoothSetName");
         advertiseOptions = call.argument("advertiseOptions");
+
+        bluetoothName = call.argument("bluetoothSetName");
+        
         serviceUuid = call.argument("serviceUuid");
         if(bluetoothName == null){result.error("[BLE Advertise ERROR]","bluetooth name NULL POINTER EXCEPTION ","");
       return;}
         if(serviceUuid == null){result.error("[BLE Advertise ERROR]","bluetooth serviceUuid NULL POINTER EXCEPTION ","");return;}
 
-        if(!advertiseOptions){
+        if(advertiseOptions){
           ///options이 없다면
         }
 

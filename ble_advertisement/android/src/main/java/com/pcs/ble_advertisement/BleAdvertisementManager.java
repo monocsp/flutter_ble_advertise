@@ -10,16 +10,22 @@ import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.Manifest;
 import android.content.pm.PackageManager;
+// import android.bluetooth.le.TransportDiscoveryData;
 import android.util.Log;
+import android.os.ParcelUuid;
 
 public class BleAdvertisementManager{
 
    
    private BluetoothAdapter mBluetoothAdapter = null;
    private AdvertiseCallback mAdvertiseCallback;
-   private BluetoothLeAdvertiser mBluetoothLeAdvertiser;
+   private BluetoothLeAdvertiser mBluetoothLEAdvertiser;
+   private AdvertiseSettings.Builder mBluetoothLEAdvertiseSettingBuilder;
+   private AdvertiseData.Builder mBluetoothLEAdvertiseDataBuilder;
    private final Activity activity;
    private static final String TAG = "FlutterBleAdvertisePlugin";
+
+   private final int CURRENT_API_LEVEL;
 
    private int ADVERTISE_TX_POWER;
    private int ADVERTISE_MODE;
@@ -29,14 +35,14 @@ public class BleAdvertisementManager{
    // Check bluetooth permission in androidManifest
 
    public BleAdvertisementManager(Activity activity){
+      this.CURRENT_API_LEVEL = Integer.valueOf(android.os.Build.VERSION.SDK);
       this.activity = activity;
    }
 
 
    private boolean hasBluetoothConnectManifestPermission(){
-   int currentDeviceApiLevel = Integer.valueOf(android.os.Build.VERSION.SDK);
 
-   if(currentDeviceApiLevel>31){
+   if(CURRENT_API_LEVEL>31){
       return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED;
    }
    return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED;
@@ -47,9 +53,7 @@ public class BleAdvertisementManager{
    // Check bluetooth permission in androidManifest
    // this advertise permission for android12 (api 31)
    private boolean hasBluetoothAdvertiseManifestPermission(){
-   int currentDeviceApiLevel = Integer.valueOf(android.os.Build.VERSION.SDK);
-
-   if(currentDeviceApiLevel>31){
+   if(CURRENT_API_LEVEL>31){
    return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADVERTISE) == PackageManager.PERMISSION_GRANTED;
    }
    return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED;
@@ -111,36 +115,79 @@ public class BleAdvertisementManager{
      if(!isAbleBluetoothManifestPermission) {return false;}
    boolean isAbleBluetooth = checkCurrentDeviceAboutBluetooth();
    if(!isAbleBluetooth){return false;}
-
-
-      return true;
-   
+      return true;   
    }
 
    
 
 ///Advertising Bluetooth연결
-private void startAdvertising() {
-  
-  
-//   if (mAdvertiseCallback == null) {
-    
-//       AdvertiseSettings settings = buildAdvertiseSettings();  
-//       AdvertiseData data = buildAdvertiseData();
-//       mAdvertiseCallback = new BleAdvertiseCallback(activity);
+// public boolean startAdvertising() {
+// try{
+//   bleAdvertisementManager.startAdvertising();
 
-//       if (mBluetoothLeAdvertiser != null) {
- 
-          
-// // BluetoothAdapter mba=  ((BluetoothManager)activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
-// // mba.setName(BLUETOOTH_DEVICE_NAME);
-// // BluetoothLeAdvertiser blead = mba.getBluetoothLeAdvertiser();
-// // blead.startAdvertising(settings,data,mAdvertiseCallback);
-//           mBluetoothLeAdvertiser.startAdvertising(settings, data,
-//                   mAdvertiseCallback);
-//                   System.out.println("START ADVERTISING!");
-//       }
-//   }
+// }catch(Exception e){
+
+// }
+
+  
+
+// }
+
+
+
+// public void setAdvertiseSetting(boolean connectable,int timeout,int advertiseMode, int advertiseTxPower){
+//    if(CURRENT_API_LEVEL < 21){
+//       throw new Exception("[Android AdvertiseSettings Set Error] : No Support AdvertiseSettings Under API Level 21 (Android 5.0 LOLLIPOP)");
+//    }
+
+//    this.mBluetoothLEAdvertiseSettingBuilder = new AdvertiseSettings.Builder();
+
+//    ///Will be add in Android 14 Coming soon...  
+//    // mBluetoothLEAdvertiseSettingBuilder.setDiscoverable(discoverable);
+//    mBluetoothLEAdvertiseSettingBuilder.setAdvertiseMode(advertiseMode);
+//    mBluetoothLEAdvertiseSettingBuilder.setTxPowerLevel(advertiseTxPower);   
+//    mBluetoothLEAdvertiseSettingBuilder.setTimeout(timeout);
+//    mBluetoothLEAdvertiseSettingBuilder.setConnectable(connectable);
+// }
+
+public void setAdvertiseData(ParcelUuid serviceUuid, boolean includeTxPowerLevel,boolean  setIncludeDeviceName, int manufactureId, byte[] manufacturerSpecificData,ParcelUuid serviceSolicitationUuid){
+   if(CURRENT_API_LEVEL < 21){
+      throw new Exception("[Android AdvertiseData Set Error] : No Support AdvertiseData Under API Level 21 (Android 5.0 LOLLIPOP)");
+   }
+   this.mBluetoothLEAdvertiseDataBuilder = new AdvertiseData.Builder();
+
+   if(serviceUuid != null){
+      mBluetoothLEAdvertiseDataBuilder.addServiceUuid(serviceUuid);   
+   }
+
+   boolean isValidManufactureId = (manufactureId != null) && (manufactureId > 0);
+   boolean isValidManufacturerSpecificData = (manufacturerSpecificData != null);
+
+   if(isValidManufactureId && isValidManufacturerSpecificData){
+      mBluetoothLEAdvertiseDataBuilder.addManufacturerData(manufactureId, manufacturerSpecificData);
+   }
+
+   if(includeTxPowerLevel != null){
+      mBluetoothLEAdvertiseDataBuilder.setIncludeTxPowerLevel(includeTxPowerLevel);
+   }
+
+   if(setIncludeDeviceName != null){
+      mBluetoothLEAdvertiseDataBuilder.setIncludeDeviceName(setIncludeDeviceName);
+   }  
+   
+   if(CURRENT_API_LEVEL >= 31){
+      if(serviceSolicitationUuid != null){
+         mBluetoothLEAdvertiseDataBuilder.addServiceSolicitationUuid(serviceSolicitationUuid);
+      }
+   }
+
+   // Coming Soon...
+   // if(CURRENT_API_LEVEL >= 33){
+   //    if(transportDiscoveryData != null){
+   //       mBluetoothLEAdvertiseDataBuilder.addTransportDiscoveryData(transportDiscoveryData);
+   //    }
+   // }
+   
 }
 
 }
