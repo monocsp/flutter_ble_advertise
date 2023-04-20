@@ -65,7 +65,7 @@ class AndroidAdvertise implements IBleAdvertise {
     assert(
         (serviceUuid?.isEmpty ?? true) == !(advertiseServiceData == null),
         'MUST one setting [serviceUuid] or [advertiseServiceData]');
-    log("message");
+
     if (serviceUuid?.isNotEmpty ?? false) {
       advertiseServiceData =
           AdvertiseServiceData(serviceUuid: serviceUuid!);
@@ -76,7 +76,7 @@ class AndroidAdvertise implements IBleAdvertise {
       "setIncludeDeviceName": setIncludeDeviceName,
     }
       ..addAll(advertiseServiceData!.toMap)
-      ..addAll(advertiseOptions?.toMap ?? {"advertiseOptions": false});
+      ..addAll(advertiseOptions?.toMap ?? {"hasAdvertiseOptions": false});
     log("RESULT : $result");
     return false;
     // try {

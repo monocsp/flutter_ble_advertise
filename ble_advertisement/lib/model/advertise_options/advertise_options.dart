@@ -79,7 +79,7 @@ class AdvertiseOptions {
   // final bool discoverable;
 
   get toMap => {
-        "advertiseOptions": true,
+        "hasAdvertiseOptions": true,
         "connectable": connectable,
         "advertiseInterval": advertiseInterval,
         "serviceSolicitationUuid": serviceSolicitationUuid,

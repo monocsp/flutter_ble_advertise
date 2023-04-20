@@ -16,7 +16,6 @@ import android.os.ParcelUuid;
 
 public class BleAdvertisementManager{
 
-   
    private BluetoothAdapter mBluetoothAdapter = null;
    private AdvertiseCallback mAdvertiseCallback;
    private BluetoothLeAdvertiser mBluetoothLEAdvertiser;
@@ -88,7 +87,6 @@ public class BleAdvertisementManager{
    // Check about Turn on Bluetooth current device
    private boolean isTurnOnBluetoothCurrentDevice(){
         if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
-          
           return false;
         }
         return true;

@@ -76,6 +76,8 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   private BleAdvertisementManager bleAdvertisementManager;
 
   private static final String METHOD_CHANNEL_NAME = "com.pcs.flutter_ble_advertisement_android";
+  private static final String TAG = "FlutterBleAdvertisePlugin";
+  private static final String ERROR_TAG = "[BLE Advertise ERROR] :";
 
   //For StartActivity - ActivityAware
   @Override
@@ -88,6 +90,31 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       bleAdvertisementManager = new BleAdvertisementManager(activity);
     
   }
+    @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    channel.setMethodCallHandler(null);
+    // stopService(_bleService);
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+    // TODO: the Activity your plugin was attached to was
+    // destroyed to change configuration.
+    // This call will be followed by onReattachedToActivityForConfigChanges().
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding activityPluginBinding) {
+    // TODO: your plugin is now attached to a new Activity
+    // after a configuration change.
+  }
+
+  @Override
+  public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    return false;
+  }
+  
 
   @Override
   public void onDetachedFromActivity() {
@@ -108,59 +135,44 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
 
-    ///open Bluetooth setting page
+    // open Bluetooth setting page
     if(call.method.equals(AdvertiseMethodChannel.openBleSettingPage.getName())){
-      try{
-        Intent intentOpenBluetoothSettings = new Intent();
-        intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS); 
-        activity.startActivityForResult(intentOpenBluetoothSettings,0); 
-        result.success(true);
-      }catch(Exception e){
-        result.error("","",e);
-      }
+      openBleSettingPage(result);
       return;
     }
 
     if(call.method.equals(AdvertiseMethodChannel.isAbleAdvertise.getName())){
-          try{
-        boolean confirmPermission = bleAdvertisementManager.checkAbleBluetooth();
-        if(confirmPermission){
-        result.success(true);
-        return;
-        }
-        result.success(false);
-      }catch(Exception e){
-        result.error("","",e);
-      }
-      return;
+         isAbleAdvertiseCallByMethodChannel(result);
+         return;
     }
 
     if (call.method.equals(AdvertiseMethodChannel.startAdvertise.getName())) {
-      String serviceUuid;
-      String bluetoothName;
-      int advertiseTimeOut;
-      int txPower;
-      int advertiseMode;
-      boolean advertiseOptions;
-      
-
-      
-      try{
-        advertiseOptions = call.argument("advertiseOptions");
-
-        bluetoothName = call.argument("bluetoothSetName");
-        
-        serviceUuid = call.argument("serviceUuid");
-        if(bluetoothName == null){result.error("[BLE Advertise ERROR]","bluetooth name NULL POINTER EXCEPTION ","");
-      return;}
-        if(serviceUuid == null){result.error("[BLE Advertise ERROR]","bluetooth serviceUuid NULL POINTER EXCEPTION ","");return;}
-
-        if(advertiseOptions){
-          ///options이 없다면
+        if(bleAdvertisementManager == null){
+         result.error(TAG,ERROR_TAG," BleAdvertisementManager is Null");
+          return;
+         }
+         if(!bleAdvertisementManager.checkAbleBluetooth()){
+         result.error(TAG,ERROR_TAG," Current Cannot use BLE, Please Check Ble setting, using 'isAbleAdvertise' ");
+          return;
+         }
+         
+        if(call.argument("bluetoothSetName") == null){
+          result.error(TAG,ERROR_TAG," Bluetooth Name is Null Please try again after setting bluetooth name");
+          return;
         }
 
-        ///있다면
+        if(call.argument("serviceUuid") == null){
+          result.error(TAG,ERROR_TAG," ServiceUuid is Null Please try again after setting ServiceUuid");
+          return;
+        }
 
+        String serviceUuid;
+        String bluetoothName;
+        // int advertiseTimeOut;
+        // int txPower;
+        // int advertiseMode;
+        // boolean advertiseOptions;
+      
         ParcelUuid Advt_UUID;
         Advt_UUID = ParcelUuid.fromString(serviceUuid);
 
@@ -172,11 +184,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
 
         // ParcelUuid Advt_Service_UUID = ParcelUuid.fromString(data);
 
-        ///현재 기기가 bluetooth를 지원하는지 체크함
-        if(BluetoothAdapter.getDefaultAdapter() == null){
-          result.error("0","BLUETOOTH ERROR ","THIS DEVICE DOES NOT SUPPORT BLUETOOTH");
-          return;
-        }
+        
         // ///현재 기기가 bluetooth 권한이 설정되어있는지 체크
         // if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
         //   result.error("1","BLUETOOTH TURN OFF ","PERMISSION DENIED");
@@ -222,67 +230,56 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       }
       return;
     }
-
-  // if(call.method.equals(AdvertiseMethodChannel.isAbleAdvertise.getName())){
-  //  try{
-        
-  //       result.success(true);
-  //     }catch(Exception e){
-
-  //       System.out.println("Ble distory ERROR IOException!");
-  //       result.error("4","Ble ERROR",e);
-  //     }
-  //     return;
-  
-  
-  // }
-
-
     result.notImplemented();
     return;
   }
 
-
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    channel.setMethodCallHandler(null);
-    // stopService(_bleService);
-  }
-
-  @Override
-  public void onDetachedFromActivityForConfigChanges() {
-    // TODO: the Activity your plugin was attached to was
-    // destroyed to change configuration.
-    // This call will be followed by onReattachedToActivityForConfigChanges().
-  }
-
-  @Override
-  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding activityPluginBinding) {
-    // TODO: your plugin is now attached to a new Activity
-    // after a configuration change.
-  }
-
-  @Override
-  public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-
-    return false;
-  }
+  private boolean isNullServiceUUid(@NonNull Result result){
   
+  }
+
+
+  private boolean isNullBluetoothName(@NonNull Result result){}
+
+
+  // MethodCannel call this Method
+  // isAbleAdvertise
+  private boolean isAbleAdvertiseCallByMethodChannel(@NonNull Result result){
+   try{
+        boolean confirmPermission = bleAdvertisementManager.checkAbleBluetooth();
+        if(confirmPermission){
+        result.success(true);
+        return true;
+        }
+        result.success(false);
+      }catch(Exception e){
+        result.error(TAG,ERROR_TAG,e);
+      }
+      return false;
+  }
+
+  // MethodCannel call this Method
+  // openBluettothSettingPage in Android settings
+  private void openBleSettingPage(@NonNull Result result){
+  try{
+        Intent intentOpenBluetoothSettings = new Intent();
+        intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS); 
+        activity.startActivityForResult(intentOpenBluetoothSettings,0); 
+        result.success(true);
+      }catch(Exception e){
+        result.error(TAG,ERROR_TAG,e);
+      }
+      return;
+  }
+
+
+
   ///
-  public boolean startBLEConnection(){
-    ///이미 블루투스가 작동되고 있음.
-    if(mBluetoothAdapter != null){
-      // Log.e( "mBluetoothAdapter is Not NUll Already Started Advertise");  
-      mBluetoothAdapter = null;
-      return false;}
-    
+  private boolean startBLEConnection(){
+
+
     mBluetoothAdapter = ((BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
-    // mBluetoothAdapter = (activity.getSystemService(Context.BLUETOOTH_SERVICE));
-    // Is Bluetooth supported on this device?
-    if(mBluetoothAdapter == null){
-    System.out.println("mBluetoothAdapter is NULL");
-    return false;
-    }
+
      // Is Bluetooth turned on?
     if(!mBluetoothAdapter.isEnabled()){
       System.out.println("mBluetoothAdapter is UnAvaliable");
@@ -295,39 +292,14 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       return false;
     
     }    
-      ///BT설정
-      initializeBt();
-      setTimeout();
+      // setTimeout();
       return true;
       // IntentFilter failureFilter = IntentFilter(AdvertiserService.ADVERTISING_FAILED);
       // registerReceiver(advertisingFailureReceiver, failureFilter); 
   }
   
 
-private void initializeBt() {
 
-  // // if (mBluetoothLeAdvertiser == null) {
-    
-  //     BluetoothManager mBluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
-  //     // if (mBluetoothManager != null) {
-  
-  //         BluetoothAdapter mBluetoothAdapter = mBluetoothManager.getAdapter();
-  //         // if (mBluetoothAdapter != null) {
-            
-  //             ///Bluetooth Key
-  //             mBluetoothAdapter.setName(BLUETOOTH_DEVICE_NAME);
-  //             mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
-  //         } else {
-  //             System.out.println("initializeBt BLUETOOTH ADAPTER NULL ERROR ");
-  //             // Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
-  //         }
-  //     } else {
-  //         System.out.println("initializeBt BLUETOOTH MANAGER NULL ERROR ");
-  //         // Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
-  //     }
-  // }
-
-}
 ///BLE Timeout시 작동하는 함수
 private void setTimeout() {
   mHandler = new Handler();
