@@ -78,19 +78,19 @@ class AndroidAdvertise implements IBleAdvertise {
       ..addAll(advertiseServiceData!.toMap)
       ..addAll(advertiseOptions?.toMap ?? {"hasAdvertiseOptions": false});
     log("RESULT : $result");
-    return false;
-    // try {
-    //   return await channel.invokeMethod(
-    //       AdvertiseMethodChannel.startAdvertise.name,
-    //       {
-    //         "bluetoothSetName": bluetoothSetName,
-    //         "setIncludeDeviceName": setIncludeDeviceName,
-    //       }
-    //         ..addAll(advertiseServiceData!.toMap)
-    //         ..addAll(advertiseOptions?.toMap ?? {}));
-    // } catch (e) {
-    //   log('[BLE ADVERTISE in startAdvertise ERROR] : $e');
-    //   return false;
-    // }
+
+    try {
+      Map<String, dynamic> methodChannelData = {
+        "bluetoothSetName": bluetoothSetName,
+        "setIncludeDeviceName": setIncludeDeviceName,
+      }
+        ..addAll(advertiseServiceData!.toMap)
+        ..addAll(advertiseOptions?.toMap ?? {});
+      return await channel.invokeMethod(
+          AdvertiseMethodChannel.startAdvertise.name, methodChannelData);
+    } catch (e) {
+      log('[BLE ADVERTISE in startAdvertise ERROR] : $e');
+      return false;
+    }
   }
 }

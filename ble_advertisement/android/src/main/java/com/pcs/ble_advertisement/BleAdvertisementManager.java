@@ -10,9 +10,11 @@ import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.Context;
 // import android.bluetooth.le.TransportDiscoveryData;
 import android.util.Log;
 import android.os.ParcelUuid;
+import java.util.Objects;
 
 public class BleAdvertisementManager{
 
@@ -31,9 +33,12 @@ public class BleAdvertisementManager{
    private String BLUETOOTH_DEVICE_NAME;
    // public static ParcelUuid Advt_UUID = null;
 
+   
+
    // Check bluetooth permission in androidManifest
 
    public BleAdvertisementManager(Activity activity){
+      this. mBluetoothAdapter = ((BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
       this.CURRENT_API_LEVEL = Integer.valueOf(android.os.Build.VERSION.SDK);
       this.activity = activity;
    }
@@ -116,66 +121,40 @@ public class BleAdvertisementManager{
       return true;   
    }
 
-   
+// mBluetoothAdapter set Name
+public void setBluetoothAdapterName(String name){
+   mBluetoothAdapter.setName(name);
+}
 
-///Advertising Bluetooth연결
-// public boolean startAdvertising() {
-// try{
-//   bleAdvertisementManager.startAdvertising();
-
-// }catch(Exception e){
-
-// }
-
-  
-
-// }
-
-
-
-// public void setAdvertiseSetting(boolean connectable,int timeout,int advertiseMode, int advertiseTxPower){
-//    if(CURRENT_API_LEVEL < 21){
-//       throw new Exception("[Android AdvertiseSettings Set Error] : No Support AdvertiseSettings Under API Level 21 (Android 5.0 LOLLIPOP)");
-//    }
-
-//    this.mBluetoothLEAdvertiseSettingBuilder = new AdvertiseSettings.Builder();
-
-//    ///Will be add in Android 14 Coming soon...  
-//    // mBluetoothLEAdvertiseSettingBuilder.setDiscoverable(discoverable);
-//    mBluetoothLEAdvertiseSettingBuilder.setAdvertiseMode(advertiseMode);
-//    mBluetoothLEAdvertiseSettingBuilder.setTxPowerLevel(advertiseTxPower);   
-//    mBluetoothLEAdvertiseSettingBuilder.setTimeout(timeout);
-//    mBluetoothLEAdvertiseSettingBuilder.setConnectable(connectable);
-// }
-
-public void setAdvertiseData(ParcelUuid serviceUuid, boolean includeTxPowerLevel,boolean  setIncludeDeviceName, int manufactureId, byte[] manufacturerSpecificData,ParcelUuid serviceSolicitationUuid){
+// setting AdvertiseData
+public void setAdvertiseData(BleAdvertiseData bleAdvertiseData) throws Exception{
    if(CURRENT_API_LEVEL < 21){
       throw new Exception("[Android AdvertiseData Set Error] : No Support AdvertiseData Under API Level 21 (Android 5.0 LOLLIPOP)");
    }
    this.mBluetoothLEAdvertiseDataBuilder = new AdvertiseData.Builder();
 
-   if(serviceUuid != null){
-      mBluetoothLEAdvertiseDataBuilder.addServiceUuid(serviceUuid);   
-   }
+   
+   mBluetoothLEAdvertiseDataBuilder.addServiceUuid(bleAdvertiseData.serviceUuid);   
+   
 
-   boolean isValidManufactureId = (manufactureId != null) && (manufactureId > 0);
-   boolean isValidManufacturerSpecificData = (manufacturerSpecificData != null);
+   boolean isValidManufactureId = Objects.isNull(bleAdvertiseData.manufactureId);
+   boolean isValidManufacturerSpecificData = Objects.isNull(bleAdvertiseData.manufacturerSpecificData != null);
 
    if(isValidManufactureId && isValidManufacturerSpecificData){
-      mBluetoothLEAdvertiseDataBuilder.addManufacturerData(manufactureId, manufacturerSpecificData);
+      mBluetoothLEAdvertiseDataBuilder.addManufacturerData(bleAdvertiseData.manufactureId, bleAdvertiseData.manufacturerSpecificData);
    }
 
-   if(includeTxPowerLevel != null){
-      mBluetoothLEAdvertiseDataBuilder.setIncludeTxPowerLevel(includeTxPowerLevel);
+   if(Objects.isNull(bleAdvertiseData.includeTxPowerLevel)){
+      mBluetoothLEAdvertiseDataBuilder.setIncludeTxPowerLevel(bleAdvertiseData.includeTxPowerLevel);
    }
 
-   if(setIncludeDeviceName != null){
-      mBluetoothLEAdvertiseDataBuilder.setIncludeDeviceName(setIncludeDeviceName);
+   if(Objects.isNull(bleAdvertiseData.setIncludeDeviceName)){
+      mBluetoothLEAdvertiseDataBuilder.setIncludeDeviceName(bleAdvertiseData.setIncludeDeviceName);
    }  
    
    if(CURRENT_API_LEVEL >= 31){
-      if(serviceSolicitationUuid != null){
-         mBluetoothLEAdvertiseDataBuilder.addServiceSolicitationUuid(serviceSolicitationUuid);
+      if(Objects.isNull(bleAdvertiseData.serviceSolicitationUuid)){
+         mBluetoothLEAdvertiseDataBuilder.addServiceSolicitationUuid(bleAdvertiseData.serviceSolicitationUuid);
       }
    }
 
@@ -187,5 +166,74 @@ public void setAdvertiseData(ParcelUuid serviceUuid, boolean includeTxPowerLevel
    // }
    
 }
+
+// set Advertise Setting
+public void setAdvertiseSettings(BleAdvertiseData bleAdvertiseData)throws Exception {
+if(CURRENT_API_LEVEL < 21){
+      throw new Exception("[Android AdvertiseSettings Set Error] : No Support AdvertiseSettings Under API Level 21 (Android 5.0 LOLLIPOP)");
+   }
+  this.mBluetoothLEAdvertiseSettingBuilder = new AdvertiseSettings.Builder();
+  
+   if(Objects.isNull(bleAdvertiseData.advertiseMode)){
+      this.mBluetoothLEAdvertiseSettingBuilder.setAdvertiseMode(bleAdvertiseData.advertiseMode); 
+   }
+
+  if(Objects.isNull(bleAdvertiseData.advertiseTxPower)){
+      this.mBluetoothLEAdvertiseSettingBuilder.setTxPowerLevel(bleAdvertiseData.advertiseTxPower);
+  }
+
+  if(Objects.isNull(bleAdvertiseData.connectable)){
+      this.mBluetoothLEAdvertiseSettingBuilder.setConnectable(bleAdvertiseData.connectable);
+  }
+
+  if(Objects.isNull(bleAdvertiseData.timeout)){
+      this.mBluetoothLEAdvertiseSettingBuilder.setTimeout(bleAdvertiseData.timeout);
+  }
+ 
+  ///Will be add in Android 14 Coming soon...  
+  // mBluetoothLEAdvertiseSettingBuilder.setDiscoverable(discoverable);
+
+}
+
+
+
+public void startAdvertise(){
+   this.mBluetoothLEAdvertiser = this.mBluetoothAdapter.getBluetoothLeAdvertiser();
+   this.mBluetoothLEAdvertiser.startAdvertising(this.mBluetoothLEAdvertiseSettingBuilder.build(), this.mBluetoothLEAdvertiseDataBuilder.build(),mAdvertiseCallback);
+}
+
+/// Advertising Stop. 
+private void stopAdvertising() {
+  Log.i(TAG, "Service: Stopping Advertising");
+  if(mBluetoothAdapter == null) return;
+    
+  this.mBluetoothLEAdvertiser.stopAdvertising(mAdvertiseCallback);
+  this.mAdvertiseCallback = null;
+  this.mBluetoothAdapter = null;      
+}
+
+// ///BLE Timeout시 작동하는 함수
+// private void setTimeout() {
+//   mHandler = new Handler();
+//   timeoutRunnable = () -> {
+//       Log.i(TAG, "AdvertiserService has reached timeout of " + TIMEOUT + " milliseconds, stopping advertising.");
+//       stop();
+//   };
+//   mHandler.postDelayed(timeoutRunnable, TIMEOUT);
+// }
+
+// private void stop(){
+//       stopAdvertising();
+//         // finalizeBt();
+        
+
+//         if(mHandler == null){return;}
+//         if(timeoutRunnable == null){return;
+          
+//         }
+//         mHandler.removeCallbacks(timeoutRunnable);
+        
+// }
+
 
 }

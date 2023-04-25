@@ -1,13 +1,14 @@
+package com.pcs.ble_advertisement;
 import io.flutter.plugin.common.MethodCall;
 import android.os.ParcelUuid;
 
 public class BleAdvertiseData{
    // essential parameter
-   private final String bluetoothName;
-   private final ParcelUuid serviceUuid;
+   public final String bluetoothName;
+   public final ParcelUuid serviceUuid;
    // check has advertise option
    // advertise options parameter
-   private final boolean hasAdvertiseOptions;
+   public final boolean hasAdvertiseOptions;
 
    // Default Values : 
    // advertiseMode = AdvertiseMode.balanced,
@@ -15,19 +16,25 @@ public class BleAdvertiseData{
    // advertiseTimeOut = 1000,
    // connectable = true,
 
-   private final boolean connectable;
-   private final int advertiseTxPower;
-   private final int advertiseMode;
-   private final int advertiseInterval;
+   public final boolean connectable;
+   public final int advertiseTxPower;
+   public final int advertiseMode;
+   public final int advertiseInterval;
+   public final int timeout;
    // Others doesn't matter whether contain or not
 
-   // private final boolean includeTxPowerLevel;
-   // private final boolean setIncludeDeviceName;
+   // public final boolean includeTxPowerLevel;
+   public final boolean setIncludeDeviceName;
+   public final boolean includeTxPowerLevel;
    
-   private final int manufactureId;
-   private final byte[] manufacturerSpecificData;
+   public final int manufactureId;
+   public final byte[] manufacturerSpecificData;
    
-   private final ParcelUuid serviceSolicitationUuid;
+   public final ParcelUuid serviceSolicitationUuid;
+
+   // Coming Soon...
+   // required api level 33 
+   // public final boolean setDiscoverable;
 
    // public BleAdvertiseData(String bluetoothName,ParcelUuid serviceUuid, boolean includeTxPowerLevel,boolean  setIncludeDeviceName, int manufactureId, byte[] manufacturerSpecificData,ParcelUuid serviceSolicitationUuid){
    //    this.bluetoothName = bluetoothName;
@@ -40,19 +47,22 @@ public class BleAdvertiseData{
    // }
    
    public BleAdvertiseData(MethodCall call){
-      this.serviceUuid = call.argument("serviceUuid");
+      String uuid = call.argument("serviceUuid");
+      this.serviceUuid = ParcelUuid.fromString(uuid);
       this.bluetoothName = call.argument("bluetoothName");
       this.hasAdvertiseOptions = call.argument("hasAdvertiseOptions");
-      if(!hasAdvertiseOptions){
-         return this;
-      }
+      this.timeout = call.argument("timeout");
       this.connectable = call.argument("connectable");
       this.advertiseTxPower = call.argument("advertiseTxPower");
       this.advertiseMode = call.argument("advertiseMode");
       this.advertiseInterval = call.argument("advertiseInterval");
       this.manufactureId = call.argument("manufactureId");
+      this.includeTxPowerLevel = call.argument("includeTxPowerLevel");
       this.manufacturerSpecificData = call.argument("manufacturerSpecificData");
-      return this;   
+      String serviceSolicitationUuidToString = call.argument("serviceSolicitationUuid");
+      this.serviceSolicitationUuid = ParcelUuid.fromString(serviceSolicitationUuidToString);
+      this.setIncludeDeviceName = call.argument("setIncludeDeviceName");
+      
    }
 
 }
