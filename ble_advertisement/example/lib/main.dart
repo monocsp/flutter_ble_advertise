@@ -40,14 +40,14 @@ class _MyAppState extends State<MyApp> {
             onPressed: () async {
               bool isthis = await bleAdvertise.isAbleAdvertise;
               log(isthis.toString());
-              if (isthis) {
-                await bleAdvertise.startAdvertise(
-                    serviceUuid: 'ffffffff-ffff-ffff-0101-4e4350555348',
-                    // advertiseOptions: AdvertiseOptions(),
-                    bluetoothSetName: 'Caps8');
-              } else {
-                bleAdvertise.openBleSettingPage;
-              }
+              // if (isthis) {
+              // await bleAdvertise.startAdvertise(
+              //     serviceUuid: 'ffffffff-ffff-ffff-0101-4e4350555348',
+              //     // advertiseOptions: AdvertiseOptions(),
+              //     bluetoothSetName: 'Caps8');
+              // } else {
+              //   bleAdvertise.openBleSettingPage;
+              // }
             },
             child: Icon(Icons.ac_unit_rounded)),
       ),

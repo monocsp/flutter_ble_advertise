@@ -1,7 +1,7 @@
 package com.pcs.ble_advertisement;
 
 import android.app.Activity;
-import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeAdvertiser;
@@ -45,11 +45,13 @@ public class BleAdvertisementManager{
 
 
    private boolean hasBluetoothConnectManifestPermission(){
-
-   if(CURRENT_API_LEVEL>31){
-      return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED;
+      Log.e(TAG,"CURRENT_API_LEVEL" + this.CURRENT_API_LEVEL);
+   if(this.CURRENT_API_LEVEL>30){
+      Log.e(TAG,"[ContextCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_CONNECT)] : " + ContextCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_CONNECT));
+      return ContextCompat.checkSelfPermission(this.activity.getApplicationContext(),Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED;
    }
-   return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED;
+   Log.e(TAG,"[ContextCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH)]");
+   return ContextCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED;
 
    
    }
@@ -57,10 +59,10 @@ public class BleAdvertisementManager{
    // Check bluetooth permission in androidManifest
    // this advertise permission for android12 (api 31)
    private boolean hasBluetoothAdvertiseManifestPermission(){
-   if(CURRENT_API_LEVEL>31){
-   return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADVERTISE) == PackageManager.PERMISSION_GRANTED;
+   if(CURRENT_API_LEVEL>30){
+   return ContextCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADVERTISE) == PackageManager.PERMISSION_GRANTED;
    }
-   return ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED;
+   return ContextCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED;
    
    }
    
