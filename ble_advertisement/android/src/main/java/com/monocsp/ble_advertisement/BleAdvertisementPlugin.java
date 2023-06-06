@@ -1,4 +1,4 @@
-package com.pcs.ble_advertisement;
+package com.monocsp.ble_advertisement;
 
 import androidx.annotation.NonNull;
 
@@ -74,16 +74,14 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
 
   private BleAdvertisementManager bleAdvertisementManager;
 
-  private static final String METHOD_CHANNEL_NAME = "com.pcs.flutter_ble_advertisement_android";
+  private static final String METHOD_CHANNEL_NAME = "com.monocsp.flutter_ble_advertisement_android";
   private static final String ERROR_TAG = " BLE Advertise ERROR] :";
 
   //For StartActivity - ActivityAware
   @Override
   public void onAttachedToActivity(ActivityPluginBinding activityPluginBinding) {
-    // TODO: your plugin is now attached to an Activity
-      //현재 Activity가져옴
+    
       activity = activityPluginBinding.getActivity();
-      //현재 class에서 activityresult 사용가능
       activityPluginBinding.addActivityResultListener(this);
       bleAdvertisementManager = new BleAdvertisementManager(activity);
     
@@ -192,7 +190,7 @@ public class BleAdvertisementPlugin implements FlutterPlugin, MethodCallHandler,
       return;
     }
 
-    ///Service 제거할때 사용하는 것.
+    /// Service 제거할때 사용하는 것.
     /// advertise하고 종료할때 제거가 되나, 오류가생겨서 안될 때 사용
     if(call.method.equals(AdvertiseMethodChannel.stopAdvertise.getName())) {
       try{

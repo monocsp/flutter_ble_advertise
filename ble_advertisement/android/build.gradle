@@ -1,4 +1,4 @@
-group 'com.pcs.ble_advertisement'
+group 'com.monocsp.ble_advertisement'
 version '1.0'
 
 buildscript {

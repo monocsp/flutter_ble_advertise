@@ -1,5 +1,5 @@
 
-package com.pcs.ble_advertisement;
+package com.monocsp.ble_advertisement;
 
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseSettings;
@@ -9,7 +9,7 @@ import android.app.Activity;
 
 public class BleAdvertiseCallback extends AdvertiseCallback {
     public static final String ADVERTISING_FAILED_EXTRA_CODE = "failureCode";
-      public static final String ADVERTISING_FAILED = "com.pcs.flutter.ble.advertising_failed";
+      public static final String ADVERTISING_FAILED = "com.monocsp.flutter.ble.advertising_failed";
    private static final String TAG = BleAdvertiseCallback.class.getSimpleName();
     private final Activity activity;
 

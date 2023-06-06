@@ -8,7 +8,7 @@
 PRODUCT_NAME = ble_advertisement_example
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.pcs.bleAdvertisementExample
+PRODUCT_BUNDLE_IDENTIFIER = com.monocsp.bleAdvertisementExample
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.pcs. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.monocsp. All rights reserved.

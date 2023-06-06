@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.pcs.ble_advertisement">
+  package="com.monocsp.ble_advertisement">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     

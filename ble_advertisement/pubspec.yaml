@@ -35,7 +35,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.pcs.ble_advertisement
+        package: com.monocsp.ble_advertisement
         pluginClass: BleAdvertisementPlugin
       ios:
         pluginClass: BleAdvertisementPlugin

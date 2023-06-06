@@ -1,6 +1,6 @@
 enum BleAdvertiseTargetPlatform {
-  android(channel: 'com.pcs.flutter_ble_advertisement_android'),
-  iOS(channel: 'com.pcs.flutter_ble_advertisement_ios');
+  android(channel: 'com.monocsp.flutter_ble_advertisement_android'),
+  iOS(channel: 'com.monocsp.flutter_ble_advertisement_ios');
 
   final String channel;
   const BleAdvertiseTargetPlatform({required this.channel});
@@ -10,16 +10,16 @@ enum BleAdvertiseTargetPlatform {
 
 enum AdvertiseMethodChannel {
   openBleSettingPage(
-      name: 'com.pcs.ble_advertisement.open_ble_setting_page'),
+      name: 'com.monocsp.ble_advertisement.open_ble_setting_page'),
 
-  stopAdvertise(name: 'com.pcs.ble_advertisement.stop_advertise'),
+  stopAdvertise(name: 'com.monocsp.ble_advertisement.stop_advertise'),
 
-  isAbleAdvertise(name: 'com.pcs.ble_advertisement.is_able_advertise'),
+  isAbleAdvertise(name: 'com.monocsp.ble_advertisement.is_able_advertise'),
 
   isActivatedAdvertise(
-      name: 'com.pcs.ble_advertisement.is_activated_advertise'),
+      name: 'com.monocsp.ble_advertisement.is_activated_advertise'),
 
-  startAdvertise(name: 'com.pcs.ble_advertisement.start_advertise');
+  startAdvertise(name: 'com.monocsp.ble_advertisement.start_advertise');
 
   final String name;
 

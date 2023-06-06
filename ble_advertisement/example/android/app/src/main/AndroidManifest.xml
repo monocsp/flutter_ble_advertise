@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pcs.ble_advertisement_example">
+    package="com.monocsp.ble_advertisement_example">
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- required for API 18 - 30 -->
     <!-- Request legacy Bluetooth permissions on older devices. -->

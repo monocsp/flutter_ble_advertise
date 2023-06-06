@@ -5,7 +5,7 @@ import CoreBluetooth
 public class SwiftBlePlugin: NSObject, FlutterPlugin {
   
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "com.pcs.flutter_ble_advertisement_ios", binaryMessenger: registrar.messenger())
+    let channel = FlutterMethodChannel(name: "com.monocsp.flutter_ble_advertisement_ios", binaryMessenger: registrar.messenger())
     let instance = SwiftBlePlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }

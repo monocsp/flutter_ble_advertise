@@ -1,4 +1,4 @@
-package com.pcs.ble_advertisement;
+package com.monocsp.ble_advertisement;
 
 import android.app.Activity;
 import androidx.core.content.ContextCompat;

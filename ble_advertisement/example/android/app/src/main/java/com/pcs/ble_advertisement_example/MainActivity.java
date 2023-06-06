@@ -1,4 +1,4 @@
-package com.pcs.ble_advertisement_example;
+package com.monocsp.ble_advertisement_example;
 
 import io.flutter.embedding.android.FlutterActivity;
 

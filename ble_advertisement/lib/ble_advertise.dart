@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ble_advertisement/ble_advertise_platform_interface.dart';
 import 'package:flutter/services.dart';
 import 'package:ble_advertisement/model/enum/native_channel_name.dart';
 import 'package:ble_advertisement/platform_advertise/android/android_advertise.dart';
@@ -32,4 +33,7 @@ class BleAdvertise {
     throw NoSupportCurrentDevice(
         'DOES NOT SUPPORT CURRENT PLATFORM, Only Support Android or iOS ');
   }
+
+  BleAdvertisePlatform.instance
+
 }

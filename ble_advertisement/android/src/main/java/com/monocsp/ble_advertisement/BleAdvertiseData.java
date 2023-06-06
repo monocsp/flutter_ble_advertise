@@ -1,4 +1,4 @@
-package com.pcs.ble_advertisement;
+package com.monocsp.ble_advertisement;
 import io.flutter.plugin.common.MethodCall;
 import android.os.ParcelUuid;
 
